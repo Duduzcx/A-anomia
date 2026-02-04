@@ -1,0 +1,84 @@
+'use client';
+
+import { useState } from 'react';
+import { useFormState } from 'react-dom';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { updatePostAction, refinePostAction } from '@/app/actions';
+import { Loader2, Sparkles } from 'lucide-react';
+import type { Post } from '@/types';
+import { SubmitButton } from './submit-button';
+
+export default function EditPostForm({ post }: { post: Post }) {
+  const [title, setTitle] = useState(post.title);
+  const [content, setContent] = useState(post.content);
+  const [tags, setTags] = useState(post.tags.join(', '));
+  const [isRefining, setIsRefining] = useState(false);
+  const [refineError, setRefineError] = useState<string | null>(null);
+
+  const updatePostActionWithId = updatePostAction.bind(null, post.id);
+  const [updateState, formAction] = useFormState(updatePostActionWithId, { errors: {} });
+
+  const handleRefine = async () => {
+    setIsRefining(true);
+    setRefineError(null);
+    const result = await refinePostAction(title, content);
+    setIsRefining(false);
+    if (result.error) {
+      setRefineError(result.error);
+    } else if (result.data) {
+      setTitle(result.data.refinedTitle);
+      setContent(result.data.refinedContent);
+    }
+  };
+
+  return (
+    <Card className="mt-8">
+      <CardContent className="pt-6">
+        <form action={formAction} className="space-y-6">
+          <div className='space-y-2'>
+            <Label htmlFor="title" className="text-base">Title</Label>
+            <Input id="title" name="title" value={title} onChange={(e) => setTitle(e.target.value)} className="text-lg h-11" />
+            {updateState.errors?.title && <p className="mt-1 text-sm text-destructive">{updateState.errors.title[0]}</p>}
+          </div>
+          <div className='space-y-2'>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="content" className="text-base">Content</Label>
+              <Button type="button" variant="outline" size="sm" onClick={handleRefine} disabled={isRefining}>
+                {isRefining ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Refining...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Refine with AI
+                  </>
+                )}
+              </Button>
+            </div>
+            {refineError && <p className="mt-1 text-sm text-destructive">{refineError}</p>}
+            <Textarea id="content" name="content" value={content} onChange={(e) => setContent(e.target.value)} className="mt-2" rows={20} />
+            {updateState.errors?.content && <p className="mt-1 text-sm text-destructive">{updateState.errors.content[0]}</p>}
+          </div>
+          <div className='space-y-2'>
+            <Label htmlFor="tags" className="text-base">Tags</Label>
+            <Input id="tags" name="tags" value={tags} onChange={(e) => setTags(e.target.value)} placeholder="e.g., ethics, technology, mind" />
+            <p className="mt-1 text-sm text-muted-foreground">
+              Comma-separated tags.
+            </p>
+            {updateState.errors?.tags && <p className="mt-1 text-sm text-destructive">{updateState.errors.tags[0]}</p>}
+          </div>
+          
+          {updateState.errors?._form && <p className="text-sm text-destructive">{updateState.errors._form[0]}</p>}
+
+          <SubmitButton pendingText="Saving Changes...">Save Changes</SubmitButton>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
