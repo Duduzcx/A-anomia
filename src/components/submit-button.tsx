@@ -17,7 +17,7 @@ export function SubmitButton({ children, pendingText, ...props }: SubmitButtonPr
       {pending ? (
         <>
           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          {pendingText || 'Saving...'}
+          {pendingText || 'Salvando...'}
         </>
       ) : (
         children

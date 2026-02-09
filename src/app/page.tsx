@@ -18,14 +18,14 @@ export default async function Home({ searchParams }: { searchParams?: { query?: 
       <div className="container py-8 mx-auto max-w-7xl sm:py-12">
         <div className="mb-8 text-center md:mb-12">
           <h1 className="text-4xl font-bold tracking-tight text-center font-headline sm:text-5xl md:text-6xl">
-            PhiloThoughts
+            A Anomia
           </h1>
           <p className="max-w-2xl mx-auto mt-4 text-lg text-muted-foreground">
-            Exploring timeless questions in the modern world.
+            Explorando questões atemporais no mundo moderno.
           </p>
         </div>
 
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>Carregando...</div>}>
           {filteredPosts.length > 0 ? (
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {filteredPosts.map((post) => (
@@ -34,8 +34,8 @@ export default async function Home({ searchParams }: { searchParams?: { query?: 
             </div>
           ) : (
             <div className="py-24 text-center text-muted-foreground">
-              <h2 className="text-2xl font-semibold">No posts found</h2>
-              <p className="mt-2">Try a different search term or check back later.</p>
+              <h2 className="text-2xl font-semibold">Nenhum post encontrado</h2>
+              <p className="mt-2">Tente um termo de busca diferente ou volte mais tarde.</p>
             </div>
           )}
         </Suspense>

@@ -2,6 +2,7 @@ import { getPostById, getCommentsByPostId } from '@/lib/data';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
@@ -38,7 +39,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
           </div>
           <span>&middot;</span>
           <time dateTime={post.date}>
-            {format(new Date(post.date), 'MMMM d, yyyy')}
+            {format(new Date(post.date), "d 'de' MMMM 'de' yyyy", { locale: ptBR })}
           </time>
         </div>
       </div>

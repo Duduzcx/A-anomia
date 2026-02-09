@@ -8,7 +8,7 @@ export function Logo() {
         <BrainCircuit className="w-6 h-6" />
       </div>
       <span className="hidden text-xl font-bold sm:inline-block font-headline text-foreground">
-        PhiloThoughts
+        A Anomia
       </span>
     </Link>
   );

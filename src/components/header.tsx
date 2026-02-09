@@ -31,8 +31,8 @@ export default function Header() {
               <Button asChild>
                 <Link href="/posts/new">
                   <PlusCircle className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">New Post</span>
-                  <span className="sm:hidden">New</span>
+                  <span className="hidden sm:inline">Novo Post</span>
+                  <span className="sm:hidden">Novo</span>
                 </Link>
               </Button>
             )}

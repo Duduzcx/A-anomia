@@ -28,26 +28,26 @@ export default function PostActions({ postId }: { postId: string }) {
     <div className="flex justify-end gap-2 mt-8">
       <Button variant="outline" asChild>
         <Link href={`/posts/${postId}/edit`}>
-          <Pencil className="w-4 h-4 mr-2" /> Edit
+          <Pencil className="w-4 h-4 mr-2" /> Editar
         </Link>
       </Button>
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="destructive">
-            <Trash2 className="w-4 h-4 mr-2" /> Delete
+            <Trash2 className="w-4 h-4 mr-2" /> Excluir
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>Você tem certeza absoluta?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete this post and all its comments.
+              Esta ação não pode ser desfeita. Isso excluirá permanentemente este post e todos os seus comentários.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <form action={deletePostAction.bind(null, postId)}>
-              <AlertDialogAction type="submit">Continue</AlertDialogAction>
+              <AlertDialogAction type="submit">Continuar</AlertDialogAction>
             </form>
           </AlertDialogFooter>
         </AlertDialogContent>

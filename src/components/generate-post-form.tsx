@@ -12,16 +12,16 @@ import { Loader2, Wand2 } from 'lucide-react';
 import { SubmitButton } from './submit-button';
 
 const philosophicalTopics = [
-  "Ethics in everyday life",
-  "Politics and power",
-  "Knowledge and truth",
-  "Philosophy of modern life",
-  "Existentialism",
-  "Morality on social media",
-  "Freedom, choice, and responsibility",
-  "Philosophy and technology",
-  "The nature of consciousness",
-  "The meaning of life"
+  "Ética no dia a dia",
+  "Política e poder",
+  "Conhecimento e verdade",
+  "Filosofia da vida moderna",
+  "Existencialismo",
+  "Moralidade nas redes sociais",
+  "Liberdade, escolha e responsabilidade",
+  "Filosofia e tecnologia",
+  "A natureza da consciência",
+  "O sentido da vida"
 ];
 
 export default function GeneratePostForm() {
@@ -34,7 +34,7 @@ export default function GeneratePostForm() {
 
   const handleGenerate = async () => {
     if (!topic) {
-      setError('Please enter a topic.');
+      setError('Por favor, insira um tópico.');
       return;
     }
     setIsLoading(true);
@@ -58,32 +58,32 @@ export default function GeneratePostForm() {
     <div className="mt-8 space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>1. Generate with AI</CardTitle>
-          <CardDescription>Enter a philosophical topic to generate a blog post draft.</CardDescription>
+          <CardTitle>1. Gerar com IA</CardTitle>
+          <CardDescription>Insira um tópico filosófico para gerar um rascunho de post.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-2 sm:flex-row">
             <Input
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              placeholder="e.g., The nature of free will"
+              placeholder="ex: A natureza do livre arbítrio"
               disabled={isLoading}
               className="flex-grow"
             />
             <Button variant="outline" onClick={pickRandomTopic} disabled={isLoading} className='w-full sm:w-auto'>
-              I'm feeling lucky
+              Estou com sorte
             </Button>
           </div>
           <Button onClick={handleGenerate} disabled={isLoading || !topic}>
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Generating...
+                Gerando...
               </>
             ) : (
               <>
                 <Wand2 className="w-4 h-4 mr-2" />
-                Generate Post
+                Gerar Post
               </>
             )}
           </Button>
@@ -94,33 +94,33 @@ export default function GeneratePostForm() {
       {generatedContent && (
         <Card>
           <CardHeader>
-            <CardTitle>2. Review and Save</CardTitle>
-            <CardDescription>Edit the generated content and save your new post.</CardDescription>
+            <CardTitle>2. Revise e Salve</CardTitle>
+            <CardDescription>Edite o conteúdo gerado e salve seu novo post.</CardDescription>
           </CardHeader>
           <CardContent>
             <form action={createFormAction} className="space-y-6">
               <div className='space-y-2'>
-                <Label htmlFor="title" className="text-base">Title</Label>
+                <Label htmlFor="title" className="text-base">Título</Label>
                 <Input id="title" name="title" defaultValue={generatedContent.title} className="text-lg h-11" />
                 {createState.errors?.title && <p className="mt-1 text-sm text-destructive">{createState.errors.title[0]}</p>}
               </div>
               <div className='space-y-2'>
-                <Label htmlFor="content" className="text-base">Content</Label>
+                <Label htmlFor="content" className="text-base">Conteúdo</Label>
                 <Textarea id="content" name="content" defaultValue={generatedContent.content} className="mt-2" rows={20} />
                 {createState.errors?.content && <p className="mt-1 text-sm text-destructive">{createState.errors.content[0]}</p>}
               </div>
               <div className='space-y-2'>
                 <Label htmlFor="tags" className="text-base">Tags</Label>
-                <Input id="tags" name="tags" placeholder="e.g., ethics, technology, mind" />
+                <Input id="tags" name="tags" placeholder="ex: ética, tecnologia, mente" />
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Comma-separated tags.
+                  Tags separadas por vírgula.
                 </p>
                 {createState.errors?.tags && <p className="mt-1 text-sm text-destructive">{createState.errors.tags[0]}</p>}
               </div>
 
               {createState.errors?._form && <p className="text-sm text-destructive">{createState.errors._form[0]}</p>}
               
-              <SubmitButton pendingText="Saving Post...">Save Post</SubmitButton>
+              <SubmitButton pendingText="Salvando Post...">Salvar Post</SubmitButton>
             </form>
           </CardContent>
         </Card>

@@ -40,23 +40,23 @@ export default function EditPostForm({ post }: { post: Post }) {
       <CardContent className="pt-6">
         <form action={formAction} className="space-y-6">
           <div className='space-y-2'>
-            <Label htmlFor="title" className="text-base">Title</Label>
+            <Label htmlFor="title" className="text-base">Título</Label>
             <Input id="title" name="title" value={title} onChange={(e) => setTitle(e.target.value)} className="text-lg h-11" />
             {updateState.errors?.title && <p className="mt-1 text-sm text-destructive">{updateState.errors.title[0]}</p>}
           </div>
           <div className='space-y-2'>
             <div className="flex items-center justify-between">
-              <Label htmlFor="content" className="text-base">Content</Label>
+              <Label htmlFor="content" className="text-base">Conteúdo</Label>
               <Button type="button" variant="outline" size="sm" onClick={handleRefine} disabled={isRefining}>
                 {isRefining ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Refining...
+                    Refinando...
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-4 h-4 mr-2" />
-                    Refine with AI
+                    Refinar com IA
                   </>
                 )}
               </Button>
@@ -67,16 +67,16 @@ export default function EditPostForm({ post }: { post: Post }) {
           </div>
           <div className='space-y-2'>
             <Label htmlFor="tags" className="text-base">Tags</Label>
-            <Input id="tags" name="tags" value={tags} onChange={(e) => setTags(e.target.value)} placeholder="e.g., ethics, technology, mind" />
+            <Input id="tags" name="tags" value={tags} onChange={(e) => setTags(e.target.value)} placeholder="ex: ética, tecnologia, mente" />
             <p className="mt-1 text-sm text-muted-foreground">
-              Comma-separated tags.
+              Tags separadas por vírgula.
             </p>
             {updateState.errors?.tags && <p className="mt-1 text-sm text-destructive">{updateState.errors.tags[0]}</p>}
           </div>
           
           {updateState.errors?._form && <p className="text-sm text-destructive">{updateState.errors._form[0]}</p>}
 
-          <SubmitButton pendingText="Saving Changes...">Save Changes</SubmitButton>
+          <SubmitButton pendingText="Salvando Alterações...">Salvar Alterações</SubmitButton>
         </form>
       </CardContent>
     </Card>

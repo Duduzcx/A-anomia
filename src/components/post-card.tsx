@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import type { Post } from '@/types';
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 type PostCardProps = {
   post: Post;
@@ -47,7 +48,7 @@ export default function PostCard({ post }: PostCardProps) {
           <div>
             <p className="text-sm font-semibold">{post.author}</p>
             <p className="text-xs text-muted-foreground">
-              {format(new Date(post.date), 'MMMM d, yyyy')}
+              {format(new Date(post.date), "d 'de' MMMM 'de' yyyy", { locale: ptBR })}
             </p>
           </div>
         </CardFooter>

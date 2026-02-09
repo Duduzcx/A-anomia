@@ -8,8 +8,8 @@ import { generateBlogPost } from '@/ai/flows/generate-blog-post';
 import { refineBlogPost } from '@/ai/flows/refine-blog-post';
 
 const PostSchema = z.object({
-  title: z.string().min(3, { message: 'Title must be at least 3 characters long.' }),
-  content: z.string().min(10, { message: 'Content must be at least 10 characters long.' }),
+  title: z.string().min(3, { message: 'O título deve ter pelo menos 3 caracteres.' }),
+  content: z.string().min(10, { message: 'O conteúdo deve ter pelo menos 10 caracteres.' }),
   tags: z.string().optional(),
 });
 
@@ -34,13 +34,13 @@ export async function createPostAction(prevState: any, formData: FormData) {
       content: validatedFields.data.content,
       tags,
       imageUrl: `https://picsum.photos/seed/${Math.random()}/1200/800`, // random image
-      imageHint: 'philosophy abstract'
+      imageHint: 'filosofia abstrata'
     });
     revalidatePath('/');
     redirect(`/posts/${newPost.id}`);
   } catch (error) {
     return {
-      errors: { _form: ['Failed to create post.'] }
+      errors: { _form: ['Falha ao criar o post.'] }
     }
   }
 }
@@ -70,7 +70,7 @@ export async function updatePostAction(id: string, prevState: any, formData: For
         revalidatePath(`/posts/${id}`);
     } catch (error) {
         return {
-            errors: { _form: ['Failed to update post.'] }
+            errors: { _form: ['Falha ao atualizar o post.'] }
         }
     }
     redirect(`/posts/${id}`);
@@ -80,15 +80,15 @@ export async function deletePostAction(id: string) {
     try {
         await deletePostFromDb(id);
     } catch (e) {
-        throw new Error('Failed to delete post');
+        throw new Error('Falha ao excluir o post');
     }
     revalidatePath('/');
     redirect('/');
 }
 
 const CommentSchema = z.object({
-  author: z.string().min(2, 'Name must be at least 2 characters.'),
-  content: z.string().min(1, 'Comment cannot be empty.'),
+  author: z.string().min(2, 'O nome deve ter pelo menos 2 caracteres.'),
+  content: z.string().min(1, 'O comentário não pode estar vazio.'),
 });
 
 export async function createCommentAction(postId: string, prevState: any, formData: FormData) {
@@ -113,33 +113,33 @@ export async function createCommentAction(postId: string, prevState: any, formDa
     return { errors: {}, success: true };
   } catch (error) {
     return {
-      errors: { _form: ['Failed to add comment.'] }
+      errors: { _form: ['Falha ao adicionar o comentário.'] }
     }
   }
 }
 
 export async function generatePostAction(topic: string) {
   if (!topic) {
-    return { error: 'Topic cannot be empty.' };
+    return { error: 'O tópico não pode estar vazio.' };
   }
   try {
     const result = await generateBlogPost({ topic });
     return { data: result };
   } catch (e) {
     console.error(e);
-    return { error: 'Failed to generate blog post with AI.' };
+    return { error: 'Falha ao gerar post com IA.' };
   }
 }
 
 export async function refinePostAction(title: string, content: string) {
   if (!title || !content) {
-    return { error: 'Title and content cannot be empty.' };
+    return { error: 'O título e o conteúdo não podem estar vazios.' };
   }
   try {
     const result = await refineBlogPost({ title, content });
     return { data: result };
   } catch (e) {
     console.error(e);
-    return { error: 'Failed to refine blog post with AI.' };
+    return { error: 'Falha ao refinar post com IA.' };
   }
 }

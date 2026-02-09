@@ -18,7 +18,7 @@ export default function AdminLogin() {
     e.preventDefault();
     const success = login(username, password);
     if (!success) {
-      setError('Invalid username or password.');
+      setError('Usuário ou senha inválidos.');
       setPassword('');
     } else {
       setError('');
@@ -33,26 +33,26 @@ export default function AdminLogin() {
             {isLoggedIn ? (
                  <Card>
                     <CardHeader>
-                        <CardTitle>Welcome, Author</CardTitle>
-                        <CardDescription>You are logged in and can manage the blog posts.</CardDescription>
+                        <CardTitle>Bem-vindo, Autor</CardTitle>
+                        <CardDescription>Você está logado e pode gerenciar os posts do blog.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                         <Button asChild>
-                            <Link href="/posts/new">Add New Post</Link>
+                            <Link href="/posts/new">Adicionar Novo Post</Link>
                         </Button>
-                        <Button variant="outline" onClick={logout}>Logout</Button>
+                        <Button variant="outline" onClick={logout}>Sair</Button>
                     </CardContent>
                  </Card>
             ) : (
                 <Card>
                     <CardHeader>
-                        <CardTitle>Author Area</CardTitle>
-                        <CardDescription>Login to create and manage posts.</CardDescription>
+                        <CardTitle>Área do Autor</CardTitle>
+                        <CardDescription>Faça login para criar e gerenciar posts.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleLogin} className="space-y-4 text-left">
                             <div className="space-y-2">
-                                <Label htmlFor="username">Username</Label>
+                                <Label htmlFor="username">Usuário</Label>
                                 <Input 
                                     id="username" 
                                     value={username} 
@@ -61,7 +61,7 @@ export default function AdminLogin() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password">Senha</Label>
                                 <Input 
                                     id="password" 
                                     type="password"
@@ -71,7 +71,7 @@ export default function AdminLogin() {
                                 />
                             </div>
                             {error && <p className="text-sm text-center text-destructive">{error}</p>}
-                            <Button type="submit" className="w-full">Login as Author</Button>
+                            <Button type="submit" className="w-full">Entrar como Autor</Button>
                         </form>
                     </CardContent>
                 </Card>

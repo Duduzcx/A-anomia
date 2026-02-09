@@ -12,9 +12,9 @@ export default async function EditPostPage({ params }: { params: { id: string } 
   return (
     <div className="container max-w-4xl py-12 mx-auto">
       <div className="space-y-4 text-center">
-        <h1 className="text-4xl font-bold font-headline">Edit Post</h1>
+        <h1 className="text-4xl font-bold font-headline">Editar Post</h1>
         <p className="text-muted-foreground">
-          Refine your post's content, update tags, and save your changes.
+          Refine o conteúdo do seu post, atualize as tags e salve suas alterações.
         </p>
       </div>
       <EditPostForm post={post} />

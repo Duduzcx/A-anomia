@@ -12,14 +12,14 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const RefineBlogPostInputSchema = z.object({
-  title: z.string().describe('The current title of the blog post.'),
-  content: z.string().describe('The draft content of the blog post.'),
+  title: z.string().describe('O título atual do post do blog.'),
+  content: z.string().describe('O conteúdo do rascunho do post do blog.'),
 });
 export type RefineBlogPostInput = z.infer<typeof RefineBlogPostInputSchema>;
 
 const RefineBlogPostOutputSchema = z.object({
-  refinedTitle: z.string().describe('The refined title of the blog post.'),
-  refinedContent: z.string().describe('The refined content of the blog post.'),
+  refinedTitle: z.string().describe('O título refinado do post do blog.'),
+  refinedContent: z.string().describe('O conteúdo refinado do post do blog.'),
 });
 export type RefineBlogPostOutput = z.infer<typeof RefineBlogPostOutputSchema>;
 
@@ -31,29 +31,29 @@ const prompt = ai.definePrompt({
   name: 'refineBlogPostPrompt',
   input: {schema: RefineBlogPostInputSchema},
   output: {schema: RefineBlogPostOutputSchema},
-  prompt: `You are a contemporary blog writer specializing in philosophy, with a clear, reflective, and accessible language for a general audience. Refine the following blog post to improve its clarity, tone, and philosophical depth, making it more engaging and thought-provoking.
+  prompt: `Você é um escritor de blog contemporâneo especializado em filosofia, com uma linguagem clara, reflexiva e acessível para um público geral. Refine o seguinte post de blog para melhorar sua clareza, tom e profundidade filosófica, tornando-o mais envolvente e instigante.
 
-Follow these guidelines:
-- Write like a modern blog, not an academic article.
-- Use simple, reflective, and provocative language.
-- Use examples from everyday life, culture, the internet, and modern life.
-- Adopt an essayistic style, almost like an intelligent conversation.
-- Avoid sounding like a professor explaining.
-- Provoke the reader with questions.
-- Do not be too neutral; take a philosophical stance.
+Siga estas diretrizes:
+- Escreva como um blog moderno, não um artigo acadêmico.
+- Use uma linguagem simples, reflexiva e provocadora.
+- Use exemplos da vida cotidiana, cultura, internet e vida moderna.
+- Adote um estilo ensaístico, quase como uma conversa inteligente.
+- Evite soar como um professor explicando.
+- Provoque o leitor com perguntas.
+- Não seja muito neutro; tome uma posição filosófica.
 
-Keep the following structure:
-- Title: Reflective and catchy.
-- Introduction: Short (1-2 paragraphs), presenting a common situation connected to a philosophical problem.
-- Development: Explain the central philosophical idea, cite philosophers (Plato, Nietzsche, Kant, Foucault, etc.) without excessive formality, and relate it to the current world.
-- Critical Reflection: Question common beliefs and point out paradoxes or contradictions.
-- Closing: Conclude with a question or provocation, inviting the reader to think.
+Mantenha a seguinte estrutura:
+- Título: Reflexivo e cativante.
+- Introdução: Curta (1-2 parágrafos), apresentando uma situação comum conectada a um problema filosófico.
+- Desenvolvimento: Explique a ideia filosófica central, cite filósofos (Platão, Nietzsche, Kant, Foucault, etc.) sem formalidade excessiva e relacione-a com o mundo atual.
+- Reflexão Crítica: Questione crenças comuns e aponte paradoxos ou contradições.
+- Encerramento: Conclua com uma pergunta ou provocação, convidando o leitor a pensar.
 
-Original Title: {{{title}}}
-Original Content: {{{content}}}
+Título Original: {{{title}}}
+Conteúdo Original: {{{content}}}
 
-Refined Title: // provide a better title for the article
-Refined Content: // The complete refined blog post content, following the above guidelines and structure.
+Título Refinado: // forneça um título melhor para o artigo
+Conteúdo Refinado: // O conteúdo completo e refinado do post, seguindo as diretrizes e estrutura acima.
 `,
 });
 

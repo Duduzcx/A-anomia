@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { useEffect, useRef } from 'react';
 import { SubmitButton } from './submit-button';
 
@@ -28,34 +29,34 @@ export default function CommentSection({ postId, comments }: CommentSectionProps
 
   return (
     <div className="pt-12 mt-12 border-t">
-      <h2 className="mb-8 text-3xl font-bold font-headline">Join the Conversation</h2>
+      <h2 className="mb-8 text-3xl font-bold font-headline">Participe da Conversa</h2>
 
       <Card className="mb-8 bg-card">
         <CardHeader>
-          <CardTitle>Leave a comment</CardTitle>
+          <CardTitle>Deixe um comentário</CardTitle>
         </CardHeader>
         <CardContent>
           <form ref={formRef} action={formAction} className="space-y-4">
             <div className='space-y-2'>
-              <Input name="author" placeholder="Your Name" aria-label="Your Name" />
+              <Input name="author" placeholder="Seu Nome" aria-label="Seu Nome" />
               {state.errors?.author && <p className="text-sm text-destructive">{state.errors.author[0]}</p>}
             </div>
 
             <div className='space-y-2'>
-              <Textarea name="content" placeholder="What are your thoughts?" aria-label="Your comment" rows={4} />
+              <Textarea name="content" placeholder="Quais são seus pensamentos?" aria-label="Seu comentário" rows={4} />
               {state.errors?.content && <p className="text-sm text-destructive">{state.errors.content[0]}</p>}
             </div>
             
             {state.errors?._form && <p className="text-sm text-destructive">{state.errors._form[0]}</p>}
             
-            <SubmitButton pendingText='Posting...'>Post Comment</SubmitButton>
+            <SubmitButton pendingText='Publicando...'>Publicar Comentário</SubmitButton>
           </form>
         </CardContent>
       </Card>
 
       <div className="space-y-8">
         <h3 className="text-2xl font-bold font-headline">
-          {comments.length} {comments.length === 1 ? 'Comment' : 'Comments'}
+          {comments.length} {comments.length === 1 ? 'Comentário' : 'Comentários'}
         </h3>
         {comments.length > 0 ? (
           comments.map((comment) => (
@@ -67,7 +68,7 @@ export default function CommentSection({ postId, comments }: CommentSectionProps
                 <div className="flex items-center gap-2">
                   <p className="font-semibold">{comment.author}</p>
                   <p className="text-xs text-muted-foreground">
-                    {formatDistanceToNow(new Date(comment.date), { addSuffix: true })}
+                    {formatDistanceToNow(new Date(comment.date), { addSuffix: true, locale: ptBR })}
                   </p>
                 </div>
                 <p className="mt-1 text-foreground/90">{comment.content}</p>
@@ -75,7 +76,7 @@ export default function CommentSection({ postId, comments }: CommentSectionProps
             </div>
           )).reverse() // Show newest comments first
         ) : (
-          <p className="py-8 text-center text-muted-foreground">Be the first to comment.</p>
+          <p className="py-8 text-center text-muted-foreground">Seja o primeiro a comentar.</p>
         )}
       </div>
     </div>

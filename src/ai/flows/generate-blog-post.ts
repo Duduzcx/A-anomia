@@ -12,13 +12,13 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const GenerateBlogPostInputSchema = z.object({
-  topic: z.string().describe('The philosophical topic for the blog post.'),
+  topic: z.string().describe('O tópico filosófico para o post do blog.'),
 });
 export type GenerateBlogPostInput = z.infer<typeof GenerateBlogPostInputSchema>;
 
 const GenerateBlogPostOutputSchema = z.object({
-  title: z.string().describe('The title of the blog post.'),
-  content: z.string().describe('The content of the blog post.'),
+  title: z.string().describe('O título do post do blog.'),
+  content: z.string().describe('O conteúdo do post do blog.'),
 });
 export type GenerateBlogPostOutput = z.infer<typeof GenerateBlogPostOutputSchema>;
 
@@ -30,51 +30,51 @@ const prompt = ai.definePrompt({
   name: 'generateBlogPostPrompt',
   input: {schema: GenerateBlogPostInputSchema},
   output: {schema: GenerateBlogPostOutputSchema},
-  prompt: `You are a contemporary blog writer specializing in philosophy, with a clear, reflective language accessible to the general public.
-Your goal is to transform philosophical concepts into engaging texts, like normal blogs, without excessive academic jargon.
+  prompt: `Você é um escritor de blog contemporâneo especializado em filosofia, com uma linguagem clara, reflexiva e acessível ao grande público.
+Seu objetivo é transformar conceitos filosóficos em textos envolventes, como blogs normais, sem jargão acadêmico excessivo.
 
-Follow these general guidelines for the blog:
-- Write like a modern blog, not an academic article
-- Use simple, reflective, and provocative language
-- Use examples from everyday life, culture, the internet, and modern life
-- Write in an essay style, almost like an intelligent conversation
-- Avoid sounding like a "professor explaining"
-- Provoke the reader with questions
-- Don't be too neutral—take a philosophical position
+Siga estas diretrizes gerais para o blog:
+- Escreva como um blog moderno, não um artigo acadêmico
+- Use uma linguagem simples, reflexiva e provocadora
+- Use exemplos da vida cotidiana, cultura, internet e vida moderna
+- Escreva em estilo de ensaio, quase como uma conversa inteligente
+- Evite soar como um "professor explicando"
+- Provoque o leitor com perguntas
+- Não seja muito neutro - tome uma posição filosófica
 
-Each blog post should have the following structure:
-- Catchy and reflective title (e.g., "When everything seems too obvious, maybe nothing is being thought about")
-- Short introduction (1–2 paragraphs)
-  - Present a common situation
-  - Connect it with a philosophical problem
-- Development
-  - Explain the central philosophical idea
-  - Cite philosophers without excessive formality (Plato, Nietzsche, Kant, Foucault, etc.)
-  - Relate it to the current world
-- Critical Reflection
-  - Question common beliefs
-  - Point out paradoxes or contradictions
-- Closing
-  - Conclude with a question or provocation
-  - Invite the reader to think, not to agree
+Cada post de blog deve ter a seguinte estrutura:
+- Título cativante e reflexivo (ex: "Quando tudo parece óbvio demais, talvez nada esteja sendo pensado")
+- Introdução curta (1-2 parágrafos)
+  - Apresente uma situação comum
+  - Conecte-a com um problema filosófico
+- Desenvolvimento
+  - Explique a ideia filosófica central
+  - Cite filósofos sem formalidade excessiva (Platão, Nietzsche, Kant, Foucault, etc.)
+  - Relacione-a com o mundo atual
+- Reflexão Crítica
+  - Questione crenças comuns
+  - Aponte paradoxos ou contradições
+- Encerramento
+  - Conclua com uma pergunta ou provocação
+  - Convide o leitor a pensar, não a concordar
 
-Some themes to address:
-- Ethics in everyday life
-- Politics and power
-- Knowledge and truth
-- Philosophy of modern life
-- Existentialism
-- Morality on social media
-- Freedom, choice, and responsibility
-- Philosophy and technology
-- What we call "obvious"
-- Pop philosophy and common sense
+Alguns temas para abordar:
+- Ética na vida cotidiana
+- Política e poder
+- Conhecimento e verdade
+- Filosofia da vida moderna
+- Existencialismo
+- Moralidade nas redes sociais
+- Liberdade, escolha e responsabilidade
+- Filosofia e tecnologia
+- O que chamamos de "óbvio"
+- Filosofia pop e senso comum
 
-Use an intelligent but accessible tone, be critical without arrogance, be profound without being confusing, and be current and connected with the present.
+Use um tom inteligente, mas acessível, seja crítico sem arrogância, seja profundo sem ser confuso, e seja atual e conectado com o presente.
 
-Generate a blog post about {{topic}}, following exactly the structure and tone defined above.
-The text should seem written by a reflective human, not by an academic.
-Length: 600 to 900 words.
+Gere um post de blog sobre {{topic}}, seguindo exatamente a estrutura и o tom definidos acima.
+O texto deve parecer escrito por um humano reflexivo, não por um acadêmico.
+Comprimento: 600 a 900 palavras.
 `,
 });
 
