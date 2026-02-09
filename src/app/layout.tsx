@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/header';
 import { cn } from '@/lib/utils';
+import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'PhiloThoughts',
@@ -25,11 +26,13 @@ export default function RootLayout({
       <body className={cn(
         "font-body antialiased min-h-screen bg-background flex flex-col"
       )}>
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Toaster />
+        <Providers>
+          <Header />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

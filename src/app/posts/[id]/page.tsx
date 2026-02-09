@@ -4,22 +4,9 @@ import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import CommentSection from '@/components/comment-section';
-import { deletePostAction } from '@/app/actions';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+import PostActions from '@/components/PostActions';
 
 export default async function PostPage({ params }: { params: { id: string } }) {
   const post = await getPostById(params.id);
@@ -74,34 +61,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
         ))}
       </div>
 
-      <div className="flex justify-end gap-2 mt-8">
-        <Button variant="outline" asChild>
-          <Link href={`/posts/${post.id}/edit`}>
-            <Pencil className="w-4 h-4 mr-2" /> Edit
-          </Link>
-        </Button>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="destructive">
-              <Trash2 className="w-4 h-4 mr-2" /> Delete
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete this post and all its comments.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <form action={deletePostAction.bind(null, post.id)}>
-                <AlertDialogAction type="submit">Continue</AlertDialogAction>
-              </form>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
+      <PostActions postId={post.id} />
 
       <CommentSection postId={post.id} comments={comments} />
     </article>

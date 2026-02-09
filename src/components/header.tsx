@@ -1,11 +1,16 @@
+'use client';
+
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import SearchBar from './search-bar';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Header() {
+  const { isLoggedIn } = useAuth();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex items-center h-14 max-w-screen-2xl">
@@ -22,13 +27,15 @@ export default function Header() {
                 <SearchBar />
               </Suspense>
             </div>
-            <Button asChild>
-              <Link href="/posts/new">
-                <PlusCircle className="w-4 h-4 mr-2" />
-                <span className="hidden sm:inline">New Post</span>
-                <span className="sm:hidden">New</span>
-              </Link>
-            </Button>
+            {isLoggedIn && (
+              <Button asChild>
+                <Link href="/posts/new">
+                  <PlusCircle className="w-4 h-4 mr-2" />
+                  <span className="hidden sm:inline">New Post</span>
+                  <span className="sm:hidden">New</span>
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>
