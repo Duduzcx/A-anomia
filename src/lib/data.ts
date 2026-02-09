@@ -58,6 +58,39 @@ let posts: Post[] = [
     imageUrl: 'https://picsum.photos/seed/post5/1200/800',
     imageHint: 'old library',
   },
+  {
+    id: '6',
+    title: 'The Hard Problem of Consciousness',
+    content: 'Why do we have subjective experiences? We can understand the brain as a complex biological machine, processing information and producing behavior. But why does it feel like something to be you? This is what philosopher David Chalmers calls the "hard problem of consciousness." It’s the question of why we have qualia—the subjective quality of experience, like the redness of a rose or the taste of chocolate.\n\nNeuroscience can explain the "easy problems": how the brain distinguishes between red and blue, how it processes sensory input, and how it controls our actions. But it can’t yet explain why these processes are accompanied by a rich inner world. Is consciousness an emergent property of complex computation? Is it a fundamental property of the universe, like spacetime? Or is it just an illusion?\n\nThis mystery sits at the intersection of philosophy, neuroscience, and physics. Some theories, like Integrated Information Theory (IIT), propose that consciousness is a measure of a system’s complexity and integration, meaning even simple systems could have a tiny bit of it. Others remain skeptical that we can ever solve this puzzle with our current scientific paradigm. The hard problem reminds us that for all our knowledge, we are still strangers to ourselves. What does it mean to be a thinking, feeling being in a universe of matter and energy?',
+    author: 'Alexandre P.',
+    authorImage: 'https://picsum.photos/seed/author1/40/40',
+    date: '2024-07-15T11:00:00Z',
+    tags: ['Consciousness', 'Mind', 'Neuroscience'],
+    imageUrl: 'https://picsum.photos/seed/post6/1200/800',
+    imageHint: 'brain network',
+  },
+  {
+    id: '7',
+    title: 'Can We Be Good Without God?',
+    content: 'For centuries, morality was anchored in the divine. Religious texts and authorities provided a clear framework for right and wrong. But in a secularizing world, many people grapple with a profound question: if there is no God, can there be an objective basis for morality? Is everything permitted, as Dostoevsky’s character Ivan Karamazov feared?\n\nHumanist philosophers argue that morality does not need a divine source. Our capacity for empathy, reason, and cooperation provides a solid foundation for ethics. We can understand that causing unnecessary suffering is bad, not because a holy book says so, but because we can empathize with the one who suffers. Frameworks like utilitarianism (seeking the greatest good for the greatest number) or deontology (acting on universal moral duties) offer ways to reason about ethics without religious belief.\n\nFurthermore, evolution may have endowed us with a moral sense. Cooperation and altruism can be advantageous for a social species. This doesn’t reduce morality to mere biology; it suggests that our ethical inclinations have deep roots. The challenge for a secular world is not a descent into nihilism, but the ongoing project of building a just and compassionate society based on shared human values. We are the authors of our own moral code. Isn’t that a more profound responsibility than simply following orders?',
+    author: 'Alexandre P.',
+    authorImage: 'https://picsum.photos/seed/author1/40/40',
+    date: '2024-07-12T15:00:00Z',
+    tags: ['Ethics', 'Morality', 'Secularism'],
+    imageUrl: 'https://picsum.photos/seed/post7/1200/800',
+    imageHint: 'moral compass',
+  },
+  {
+    id: '8',
+    title: 'The Prison-House of Language',
+    content: 'Ludwig Wittgenstein famously stated, "The limits of my language mean the limits of my world." This powerful idea suggests that our reality is shaped and constrained by the words we use. We can only think thoughts that our language allows us to formulate. Are we living in a world of pure experience, or are we confined within the structure of our language?\n\nThink about concepts that exist in other languages but have no direct equivalent in English, like the German "Schadenfreude" (joy at someone else\'s misfortune) or the Japanese "Komorebi" (sunlight filtering through the trees). The existence of these words allows speakers to perceive and categorize the world in ways that are less accessible to non-speakers. Language isn’t just a tool for describing reality; it actively constructs it.\n\nThis has profound implications. If our language is biased, our thoughts will be biased. If our language lacks the words to describe certain injustices, those injustices may remain invisible. This is why movements for social change often involve a struggle over language—reclaiming words, coining new terms, and challenging old definitions. To expand our world, we must expand our language. By learning new languages, reading widely, and questioning the words we use every day, we can begin to see the walls of our linguistic prison. What thoughts are you unable to think simply because you lack the words?',
+    author: 'Alexandre P.',
+    authorImage: 'https://picsum.photos/seed/author1/40/40',
+    date: '2024-07-10T18:00:00Z',
+    tags: ['Language', 'Wittgenstein', 'Reality'],
+    imageUrl: 'https://picsum.photos/seed/post8/1200/800',
+    imageHint: 'books library',
+  },
 ];
 
 let comments: Comment[] = [
@@ -65,6 +98,8 @@ let comments: Comment[] = [
     { id: '2', postId: '1', author: 'David', content: 'I disagree. Some things are just universally obvious, like 2+2=4.', date: '2024-07-28T13:00:00Z' },
     { id: '3', postId: '2', author: 'Chloe', content: 'So true! My Instagram is definitely a "highlight reel" and not the full story.', date: '2024-07-25T15:00:00Z' },
     { id: '4', postId: '3', author: 'Marcus', content: '"Condemned to be free" is such a powerful phrase. It feels daunting but also empowering.', date: '2024-07-22T14:00:00Z' },
+    { id: '5', postId: '6', author: 'Elena', content: 'The hard problem of consciousness is something I think about all the time. It\'s fascinating and a bit scary!', date: '2024-07-15T14:00:00Z' },
+    { id: '6', postId: '7', author: 'Ben', content: 'Great points. We don\'t need ancient myths to be good to each other.', date: '2024-07-12T18:00:00Z' },
 ];
 
 const generateId = () => Math.random().toString(36).substring(2, 9);
