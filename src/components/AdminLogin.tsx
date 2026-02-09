@@ -29,10 +29,10 @@ export default function AdminLogin() {
 
   return (
     <div className="py-12 mt-12 bg-secondary">
-        <div className="container max-w-2xl text-center">
+        <div className="container flex justify-center">
             {isLoggedIn ? (
-                 <Card>
-                    <CardHeader>
+                 <Card className="w-full max-w-md">
+                    <CardHeader className="text-center">
                         <CardTitle>Bem-vindo, Autor</CardTitle>
                         <CardDescription>Você está logado e pode gerenciar os posts do blog.</CardDescription>
                     </CardHeader>
@@ -44,13 +44,13 @@ export default function AdminLogin() {
                     </CardContent>
                  </Card>
             ) : (
-                <Card>
-                    <CardHeader>
+                <Card className="w-full max-w-md">
+                    <CardHeader className="text-center">
                         <CardTitle>Área do Autor</CardTitle>
                         <CardDescription>Faça login para criar e gerenciar posts.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <form onSubmit={handleLogin} className="space-y-4 text-left">
+                        <form onSubmit={handleLogin} className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="username">Usuário</Label>
                                 <Input 
