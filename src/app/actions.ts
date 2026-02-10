@@ -9,14 +9,20 @@ import { refineBlogPost } from '@/ai/flows/refine-blog-post';
 
 const PostSchema = z.object({
   title: z.string().min(3, { message: 'O título deve ter pelo menos 3 caracteres.' }),
+  subtitle: z.string().min(3, { message: 'O subtítulo deve ter pelo menos 3 caracteres.' }),
   content: z.string().min(10, { message: 'O conteúdo deve ter pelo menos 10 caracteres.' }),
+  imageUrl: z.string().url({ message: 'Por favor, insira uma URL de imagem válida.' }),
+  imageHint: z.string().optional(),
   tags: z.string().optional(),
 });
 
 export async function createPostAction(prevState: any, formData: FormData) {
   const validatedFields = PostSchema.safeParse({
     title: formData.get('title'),
+    subtitle: formData.get('subtitle'),
     content: formData.get('content'),
+    imageUrl: formData.get('imageUrl'),
+    imageHint: formData.get('imageHint'),
     tags: formData.get('tags'),
   });
 
@@ -31,12 +37,13 @@ export async function createPostAction(prevState: any, formData: FormData) {
   try {
     const newPost = await createPost({ 
       title: validatedFields.data.title, 
+      subtitle: validatedFields.data.subtitle,
       content: validatedFields.data.content,
       tags,
-      imageUrl: `https://picsum.photos/seed/${Math.random()}/1200/800`, // random image
-      imageHint: 'filosofia abstrata'
+      imageUrl: validatedFields.data.imageUrl,
+      imageHint: validatedFields.data.imageHint || 'filosofia abstrata'
     });
-    revalidatePath('/blog');
+    revalidatePath('/');
     redirect(`/posts/${newPost.id}`);
   } catch (error) {
     return {
@@ -48,7 +55,10 @@ export async function createPostAction(prevState: any, formData: FormData) {
 export async function updatePostAction(id: string, prevState: any, formData: FormData) {
     const validatedFields = PostSchema.safeParse({
         title: formData.get('title'),
+        subtitle: formData.get('subtitle'),
         content: formData.get('content'),
+        imageUrl: formData.get('imageUrl'),
+        imageHint: formData.get('imageHint'),
         tags: formData.get('tags'),
     });
 
@@ -63,10 +73,13 @@ export async function updatePostAction(id: string, prevState: any, formData: For
     try {
         await updatePost(id, {
             title: validatedFields.data.title,
+            subtitle: validatedFields.data.subtitle,
             content: validatedFields.data.content,
             tags,
+            imageUrl: validatedFields.data.imageUrl,
+            imageHint: validatedFields.data.imageHint || 'filosofia abstrata',
         });
-        revalidatePath('/blog');
+        revalidatePath('/');
         revalidatePath(`/posts/${id}`);
     } catch (error) {
         return {
@@ -82,8 +95,8 @@ export async function deletePostAction(id: string) {
     } catch (e) {
         throw new Error('Falha ao excluir o post');
     }
-    revalidatePath('/blog');
-    redirect('/blog');
+    revalidatePath('/');
+    redirect('/');
 }
 
 const CommentSchema = z.object({

@@ -14,7 +14,10 @@ import { SubmitButton } from './submit-button';
 
 export default function EditPostForm({ post }: { post: Post }) {
   const [title, setTitle] = useState(post.title);
+  const [subtitle, setSubtitle] = useState(post.subtitle);
   const [content, setContent] = useState(post.content);
+  const [imageUrl, setImageUrl] = useState(post.imageUrl);
+  const [imageHint, setImageHint] = useState(post.imageHint);
   const [tags, setTags] = useState(post.tags.join(', '));
   const [isRefining, setIsRefining] = useState(false);
   const [refineError, setRefineError] = useState<string | null>(null);
@@ -44,6 +47,13 @@ export default function EditPostForm({ post }: { post: Post }) {
             <Input id="title" name="title" value={title} onChange={(e) => setTitle(e.target.value)} className="text-lg h-11" />
             {updateState.errors?.title && <p className="mt-1 text-sm text-destructive">{updateState.errors.title[0]}</p>}
           </div>
+
+          <div className='space-y-2'>
+            <Label htmlFor="subtitle" className="text-base">Subtítulo</Label>
+            <Input id="subtitle" name="subtitle" value={subtitle} onChange={(e) => setSubtitle(e.target.value)} />
+            {updateState.errors?.subtitle && <p className="mt-1 text-sm text-destructive">{updateState.errors.subtitle[0]}</p>}
+          </div>
+
           <div className='space-y-2'>
             <div className="flex items-center justify-between">
               <Label htmlFor="content" className="text-base">Conteúdo</Label>
@@ -65,6 +75,19 @@ export default function EditPostForm({ post }: { post: Post }) {
             <Textarea id="content" name="content" value={content} onChange={(e) => setContent(e.target.value)} className="mt-2" rows={20} />
             {updateState.errors?.content && <p className="mt-1 text-sm text-destructive">{updateState.errors.content[0]}</p>}
           </div>
+
+          <div className='space-y-2'>
+            <Label htmlFor="imageUrl" className="text-base">URL da Imagem</Label>
+            <Input id="imageUrl" name="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+            {updateState.errors?.imageUrl && <p className="mt-1 text-sm text-destructive">{updateState.errors.imageUrl[0]}</p>}
+          </div>
+
+          <div className='space-y-2'>
+            <Label htmlFor="imageHint" className="text-base">Dica para Imagem (IA)</Label>
+            <Input id="imageHint" name="imageHint" value={imageHint} onChange={(e) => setImageHint(e.target.value)} />
+            {updateState.errors?.imageHint && <p className="mt-1 text-sm text-destructive">{updateState.errors.imageHint[0]}</p>}
+          </div>
+
           <div className='space-y-2'>
             <Label htmlFor="tags" className="text-base">Tags</Label>
             <Input id="tags" name="tags" value={tags} onChange={(e) => setTags(e.target.value)} placeholder="ex: ética, tecnologia, mente" />

@@ -2,8 +2,23 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { getPosts } from '@/lib/data';
+import PostCard from '@/components/post-card';
+import { Suspense } from 'react';
+import SearchBar from '@/components/search-bar';
+import AdminLogin from '@/components/AdminLogin';
 
-export default function HomePage() {
+export default async function HomePage({ searchParams }: { searchParams?: { query?: string; }; }) {
+  const allPosts = await getPosts();
+  const query = searchParams?.query?.toLowerCase() || '';
+
+  const filteredPosts = allPosts.filter(post => 
+    post.title.toLowerCase().includes(query) || 
+    post.subtitle.toLowerCase().includes(query) ||
+    post.content.toLowerCase().includes(query) ||
+    post.tags.some(tag => tag.toLowerCase().includes(query))
+  );
+
   return (
     <>
       <section className="relative w-full py-20 text-center text-white md:py-32 lg:py-40">
@@ -27,7 +42,7 @@ export default function HomePage() {
           </p>
           <div className="mt-10">
             <Button asChild size="lg">
-              <Link href="/blog">
+              <Link href="#blog">
                 Ler o Blog <ArrowRight className="ml-2" />
               </Link>
             </Button>
@@ -45,6 +60,35 @@ export default function HomePage() {
             </div>
         </div>
       </section>
+
+      <section id="blog" className="container py-8 mx-auto max-w-7xl sm:py-12">
+            <div className="flex flex-col items-center justify-between gap-4 mb-8 md:flex-row">
+                <h1 className="text-4xl font-bold tracking-tight text-center font-headline md:text-left">
+                    Blog
+                </h1>
+                <div className="w-full max-w-sm">
+                    <Suspense>
+                        <SearchBar />
+                    </Suspense>
+                </div>
+            </div>
+            <Suspense fallback={<div>Carregando...</div>}>
+            {filteredPosts.length > 0 ? (
+                <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+                {filteredPosts.map((post) => (
+                    <PostCard key={post.id} post={post} />
+                ))}
+                </div>
+            ) : (
+                <div className="py-24 text-center text-muted-foreground">
+                <h2 className="text-2xl font-semibold">Nenhum post encontrado</h2>
+                <p className="mt-2">Tente um termo de busca diferente ou volte mais tarde.</p>
+                </div>
+            )}
+            </Suspense>
+        </section>
+
+      <AdminLogin />
     </>
   );
 }

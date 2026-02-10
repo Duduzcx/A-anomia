@@ -1,4 +1,4 @@
-import GeneratePostForm from "@/components/generate-post-form";
+import CreatePostForm from "@/components/create-post-form";
 
 export default function NewPostPage() {
   return (
@@ -6,10 +6,10 @@ export default function NewPostPage() {
       <div className="space-y-4 text-center">
         <h1 className="text-4xl font-bold font-headline">Criar um Novo Post</h1>
         <p className="text-muted-foreground">
-          Comece gerando um post com IA, depois refine e salve.
+          Preencha os campos abaixo para publicar um novo artigo no blog.
         </p>
       </div>
-      <GeneratePostForm />
+      <CreatePostForm />
     </div>
   );
 }

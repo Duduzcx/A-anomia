@@ -22,12 +22,15 @@ export default function PostCard({ post }: PostCardProps) {
           />
         </div>
         <CardContent className="flex flex-col flex-grow p-4">
-          <p className="text-sm font-semibold text-primary">{post.tags[0]}</p>
+          <p className="text-sm font-semibold text-primary">{post.tags.join(' / ')}</p>
           <h3 className="mt-2 text-lg font-bold leading-tight text-foreground group-hover:text-primary">
             {post.title}
           </h3>
-           <p className="mt-2 text-sm text-muted-foreground">
-            {post.content.substring(0, 100)}...
+          <p className="mt-2 text-sm font-medium text-muted-foreground">
+            {post.subtitle}
+          </p>
+           <p className="mt-2 text-sm text-muted-foreground/80">
+            {post.content.substring(0, 80)}...
           </p>
         </CardContent>
       </Link>

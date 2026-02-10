@@ -25,6 +25,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
         <h1 className="mt-2 text-4xl font-bold tracking-tight font-headline md:text-5xl text-foreground">
           {post.title}
         </h1>
+        <p className="mt-4 text-xl text-muted-foreground">{post.subtitle}</p>
         <div className="flex items-center gap-4 mt-6 py-3 text-sm border-t border-b border-border/50 text-muted-foreground">
           <span>Por <strong>{post.author}</strong></span>
           <time dateTime={post.date}>

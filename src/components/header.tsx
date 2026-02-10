@@ -23,8 +23,8 @@ export default function Header() {
         <div className="flex items-center gap-6">
           <Logo />
           <nav className="hidden font-medium md:flex md:gap-4">
-            <Link href="/blog" className={navLinkClasses('/blog')}>
-              Blog
+            <Link href="/" className={navLinkClasses('/')}>
+              Início
             </Link>
           </nav>
         </div>
