@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import SearchBar from './search-bar';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import { Menu, Newspaper } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -33,10 +33,9 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
       <div className="container flex items-center justify-between h-16 max-w-7xl">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-            <Newspaper className="w-6 h-6 text-primary" />
-            <span>A Anomia</span>
+        <div className="flex items-center gap-8">
+          <Link href="/" className="font-bold text-lg">
+            A Anomia
           </Link>
           <nav className="items-center hidden gap-6 text-sm font-medium md:flex">
             {navLinks}
