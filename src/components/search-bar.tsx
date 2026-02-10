@@ -18,7 +18,7 @@ export default function SearchBar() {
       } else {
         params.delete('query');
       }
-      router.replace(`/?${params.toString()}`);
+      router.replace(`/blog?${params.toString()}`);
     }, 300);
 
     return () => {
@@ -31,7 +31,7 @@ export default function SearchBar() {
       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
       <Input
         type="search"
-        placeholder="Buscar..."
+        placeholder="Buscar no blog..."
         className="w-full pl-8 bg-transparent border-border placeholder:text-muted-foreground focus:bg-secondary focus:ring-ring h-9"
         onChange={(e) => setQuery(e.target.value)}
         value={query}

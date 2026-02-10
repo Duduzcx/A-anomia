@@ -14,8 +14,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const login = (user: string, pass: string) => {
-    // Hardcoded credentials: user 'admin', password 'password'
-    if (user === 'admin' && pass === 'password') {
+    // Hardcoded credentials: user 'klebsu', password 'klebsu123'
+    if (user === 'klebsu' && pass === 'klebsu123') {
       setIsLoggedIn(true);
       return true;
     }

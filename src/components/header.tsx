@@ -4,23 +4,31 @@ import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import Link from 'next/link';
-import { Suspense } from 'react';
-import SearchBar from './search-bar';
 import { useAuth } from '@/context/AuthContext';
+import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const { isLoggedIn } = useAuth();
+  const pathname = usePathname();
+
+  const navLinkClasses = (path: string) => cn(
+    "transition-colors hover:text-primary",
+    pathname === path ? "text-primary" : "text-muted-foreground"
+  );
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
       <div className="container flex items-center justify-between h-16 max-w-7xl">
-        <Logo />
+        <div className="flex items-center gap-6">
+          <Logo />
+          <nav className="hidden font-medium md:flex md:gap-4">
+            <Link href="/blog" className={navLinkClasses('/blog')}>
+              Blog
+            </Link>
+          </nav>
+        </div>
         <div className="flex items-center gap-2 sm:gap-4">
-          <div className="w-full sm:w-auto sm:max-w-xs">
-            <Suspense>
-              <SearchBar />
-            </Suspense>
-          </div>
           {isLoggedIn && (
             <Button variant="ghost" asChild>
               <Link href="/posts/new">

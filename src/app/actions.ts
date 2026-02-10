@@ -36,7 +36,7 @@ export async function createPostAction(prevState: any, formData: FormData) {
       imageUrl: `https://picsum.photos/seed/${Math.random()}/1200/800`, // random image
       imageHint: 'filosofia abstrata'
     });
-    revalidatePath('/');
+    revalidatePath('/blog');
     redirect(`/posts/${newPost.id}`);
   } catch (error) {
     return {
@@ -66,7 +66,7 @@ export async function updatePostAction(id: string, prevState: any, formData: For
             content: validatedFields.data.content,
             tags,
         });
-        revalidatePath('/');
+        revalidatePath('/blog');
         revalidatePath(`/posts/${id}`);
     } catch (error) {
         return {
@@ -82,8 +82,8 @@ export async function deletePostAction(id: string) {
     } catch (e) {
         throw new Error('Falha ao excluir o post');
     }
-    revalidatePath('/');
-    redirect('/');
+    revalidatePath('/blog');
+    redirect('/blog');
 }
 
 const CommentSchema = z.object({

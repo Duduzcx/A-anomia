@@ -57,7 +57,7 @@ export default function AdminLogin() {
                                     id="username" 
                                     value={username} 
                                     onChange={(e) => setUsername(e.target.value)}
-                                    placeholder="admin"
+                                    placeholder="klebsu"
                                 />
                             </div>
                             <div className="space-y-2">
@@ -67,7 +67,7 @@ export default function AdminLogin() {
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="password"
+                                    placeholder="klebsu123"
                                 />
                             </div>
                             {error && <p className="text-sm text-center text-destructive">{error}</p>}
