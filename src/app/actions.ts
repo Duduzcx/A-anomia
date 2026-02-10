@@ -44,15 +44,15 @@ export async function createPostAction(prevState: any, formData: FormData) {
       imageUrl: validatedFields.data.imageUrl,
       imageHint: validatedFields.data.imageHint || 'filosofia abstrata'
     });
-  } catch (error) {
+  } catch (error: any) {
     return {
-      errors: { _form: ['Falha ao criar o post.'] }
+      errors: { _form: [`Falha ao criar o post: ${error.message}`] }
     }
   }
 
   revalidatePath('/');
   revalidatePath(`/posts/${newPost.id}`);
-  redirect(`/`);
+  redirect(`/posts/${newPost.id}`);
 }
 
 export async function updatePostAction(id: string, prevState: any, formData: FormData) {

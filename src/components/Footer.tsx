@@ -46,9 +46,21 @@ export default function Footer() {
         <div>
           <h4 className="font-semibold tracking-wider uppercase">Navegação</h4>
           <ul className="mt-4 space-y-2">
-            <li><Link href="/" className="transition-colors text-muted-foreground hover:text-white">Início</Link></li>
-            <li><Link href={isHome ? '#blog' : '/#blog'} className="transition-colors text-muted-foreground hover:text-white">Blog</Link></li>
-            <li><Link href={isHome ? '#footer' : '/#footer'} className="transition-colors text-muted-foreground hover:text-white">Contato</Link></li>
+            <li><a href="/" className="transition-colors text-muted-foreground hover:text-white">Início</a></li>
+            <li>
+              {isHome ? (
+                <a href="#blog" className="transition-colors text-muted-foreground hover:text-white">Blog</a>
+              ) : (
+                <Link href="/#blog" className="transition-colors text-muted-foreground hover:text-white">Blog</Link>
+              )}
+            </li>
+            <li>
+              {isHome ? (
+                <a href="#footer" className="transition-colors text-muted-foreground hover:text-white">Contato</a>
+              ) : (
+                <Link href="/#footer" className="transition-colors text-muted-foreground hover:text-white">Contato</Link>
+              )}
+            </li>
             {isLoggedIn && (
               <li><Link href="/posts/new" className="transition-colors text-muted-foreground hover:text-white">Novo Post</Link></li>
             )}

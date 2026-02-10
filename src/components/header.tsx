@@ -27,15 +27,27 @@ export default function Header() {
 
   const navLinks = (
     <>
-      <Link href="/" className="transition-colors text-foreground/80 hover:text-foreground">
+      <a href="/" className="transition-colors text-foreground/80 hover:text-foreground">
         Início
-      </Link>
-      <Link href={isHome ? "#blog" : "/#blog"} className="transition-colors text-foreground/80 hover:text-foreground">
-        Blog
-      </Link>
-      <Link href={isHome ? "#footer" : "/#footer"} className="transition-colors text-foreground/80 hover:text-foreground">
-        Contato
-      </Link>
+      </a>
+      {isHome ? (
+        <a href="#blog" className="transition-colors text-foreground/80 hover:text-foreground">
+          Blog
+        </a>
+      ) : (
+        <Link href="/#blog" className="transition-colors text-foreground/80 hover:text-foreground">
+          Blog
+        </Link>
+      )}
+      {isHome ? (
+        <a href="#footer" className="transition-colors text-foreground/80 hover:text-foreground">
+          Contato
+        </a>
+      ) : (
+        <Link href="/#footer" className="transition-colors text-foreground/80 hover:text-foreground">
+          Contato
+        </Link>
+      )}
       {isLoggedIn && (
         <Link href="/posts/new" className={cn("transition-colors text-foreground/80 hover:text-foreground", pathname === '/posts/new' ? 'text-primary' : '')}>
           Novo Post
