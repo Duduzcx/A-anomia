@@ -34,8 +34,9 @@ export async function createPostAction(prevState: any, formData: FormData) {
   
   const tags = validatedFields.data.tags?.split(',').map(tag => tag.trim()).filter(Boolean) ?? [];
 
+  let newPost;
   try {
-    const newPost = await createPost({ 
+    newPost = await createPost({ 
       title: validatedFields.data.title, 
       subtitle: validatedFields.data.subtitle,
       content: validatedFields.data.content,
@@ -43,13 +44,14 @@ export async function createPostAction(prevState: any, formData: FormData) {
       imageUrl: validatedFields.data.imageUrl,
       imageHint: validatedFields.data.imageHint || 'filosofia abstrata'
     });
-    revalidatePath('/');
-    redirect(`/posts/${newPost.id}`);
   } catch (error) {
     return {
       errors: { _form: ['Falha ao criar o post.'] }
     }
   }
+
+  revalidatePath('/');
+  redirect(`/posts/${newPost.id}`);
 }
 
 export async function updatePostAction(id: string, prevState: any, formData: FormData) {
@@ -79,13 +81,14 @@ export async function updatePostAction(id: string, prevState: any, formData: For
             imageUrl: validatedFields.data.imageUrl,
             imageHint: validatedFields.data.imageHint || 'filosofia abstrata',
         });
-        revalidatePath('/');
-        revalidatePath(`/posts/${id}`);
     } catch (error) {
         return {
             errors: { _form: ['Falha ao atualizar o post.'] }
         }
     }
+
+    revalidatePath('/');
+    revalidatePath(`/posts/${id}`);
     redirect(`/posts/${id}`);
 }
 
