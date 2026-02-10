@@ -29,6 +29,13 @@ export default function Footer() {
       setPassword('');
     }
   };
+  
+  const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isHome) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   return (
     <footer id="footer" className="w-full py-12 text-white border-t bg-secondary">
@@ -46,7 +53,11 @@ export default function Footer() {
         <div>
           <h4 className="font-semibold tracking-wider uppercase">Navegação</h4>
           <ul className="mt-4 space-y-2">
-            <li><a href="/" className="transition-colors text-muted-foreground hover:text-white">Início</a></li>
+            <li>
+              <Link href="/" onClick={handleHomeClick} className="transition-colors text-muted-foreground hover:text-white">
+                Início
+              </Link>
+            </li>
             <li>
               {isHome ? (
                 <a href="#blog" className="transition-colors text-muted-foreground hover:text-white">Blog</a>
@@ -75,7 +86,7 @@ export default function Footer() {
               <Instagram className="w-6 h-6" />
               <span className="sr-only">Instagram</span>
             </a>
-            <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-white">
+            <a href="https://wa.me/551199999999" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-white">
               <Phone className="w-6 h-6" />
               <span className="sr-only">WhatsApp</span>
             </a>

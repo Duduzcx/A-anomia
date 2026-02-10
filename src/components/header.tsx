@@ -25,11 +25,18 @@ export default function Header() {
 
   const isHome = pathname === '/';
 
+  const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isHome) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const navLinks = (
     <>
-      <a href="/" className="transition-colors text-foreground/80 hover:text-foreground">
+      <Link href="/" onClick={handleHomeClick} className="transition-colors text-foreground/80 hover:text-foreground">
         Início
-      </a>
+      </Link>
       {isHome ? (
         <a href="#blog" className="transition-colors text-foreground/80 hover:text-foreground">
           Blog
@@ -63,7 +70,7 @@ export default function Header() {
     )}>
       <div className="container flex items-center justify-between h-16 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+          <Link href="/" onClick={handleHomeClick} className="flex items-center gap-2 font-bold text-lg">
             A Anomia
           </Link>
         </div>
