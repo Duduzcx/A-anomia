@@ -11,19 +11,19 @@ export default function PostCard({ post }: PostCardProps) {
   return (
     <Card className="flex flex-col overflow-hidden transition-transform duration-300 ease-in-out border-border group bg-secondary hover:-translate-y-1">
       <Link href={`/posts/${post.id}`} className="flex flex-col h-full">
-        <div className="relative w-full h-48">
+        <div className="relative w-full h-48 overflow-hidden">
           <Image
             src={post.imageUrl}
             alt={post.title}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             data-ai-hint={post.imageHint}
           />
         </div>
         <CardContent className="flex flex-col flex-grow p-4">
           <p className="text-sm font-semibold text-primary">{post.tags.join(' / ')}</p>
-          <h3 className="mt-2 text-lg font-bold leading-tight text-foreground group-hover:text-primary">
+          <h3 className="mt-2 text-lg font-bold leading-tight transition-colors text-foreground group-hover:text-primary">
             {post.title}
           </h3>
           <p className="mt-2 text-sm font-medium text-muted-foreground">
