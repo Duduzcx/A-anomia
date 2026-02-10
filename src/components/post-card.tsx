@@ -22,7 +22,7 @@ export default function PostCard({ post }: PostCardProps) {
           />
         </div>
         <CardContent className="flex flex-col flex-grow p-4">
-          <p className="text-sm font-semibold text-primary">{post.tags.join(' / ')}</p>
+          {post.tags && post.tags.length > 0 && <p className="text-sm font-semibold text-primary">{post.tags.join(' / ')}</p>}
           <h3 className="mt-2 text-lg font-bold leading-tight transition-colors text-foreground group-hover:text-primary">
             {post.title}
           </h3>

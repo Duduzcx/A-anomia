@@ -1,7 +1,8 @@
 'use client';
 
-import SearchBar from './search-bar';
+import Link from 'next/link';
 import { Suspense } from 'react';
+import SearchBar from './search-bar';
 
 export default function Header() {
   return (
