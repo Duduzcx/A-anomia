@@ -5,7 +5,6 @@ import { ArrowRight } from 'lucide-react';
 import { getPosts } from '@/lib/data';
 import PostCard from '@/components/post-card';
 import { Suspense } from 'react';
-import SearchBar from '@/components/search-bar';
 import AdminLogin from '@/components/AdminLogin';
 
 export default async function HomePage({ searchParams }: { searchParams?: { query?: string; }; }) {
@@ -62,15 +61,10 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
       </section>
 
       <section id="blog" className="container py-8 mx-auto max-w-7xl sm:py-12">
-            <div className="flex flex-col items-center justify-between gap-4 mb-8 md:flex-row">
-                <h1 className="text-4xl font-bold tracking-tight text-center font-headline md:text-left">
+            <div className="mb-8 text-center">
+                <h1 className="text-4xl font-bold tracking-tight font-headline">
                     Blog
                 </h1>
-                <div className="w-full max-w-sm">
-                    <Suspense>
-                        <SearchBar />
-                    </Suspense>
-                </div>
             </div>
             <Suspense fallback={<div>Carregando...</div>}>
             {filteredPosts.length > 0 ? (

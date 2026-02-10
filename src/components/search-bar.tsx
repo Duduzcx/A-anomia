@@ -12,13 +12,13 @@ export default function SearchBar() {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      const params = new URLSearchParams(searchParams);
+      const params = new URLSearchParams(searchParams.toString());
       if (query) {
         params.set('query', query);
       } else {
         params.delete('query');
       }
-      router.replace(`/blog?${params.toString()}`);
+      router.replace(`/?${params.toString()}`);
     }, 300);
 
     return () => {
@@ -32,7 +32,7 @@ export default function SearchBar() {
       <Input
         type="search"
         placeholder="Buscar no blog..."
-        className="w-full pl-8 bg-transparent border-border placeholder:text-muted-foreground focus:bg-secondary focus:ring-ring h-9"
+        className="w-full pl-8 bg-secondary border-border placeholder:text-muted-foreground focus:ring-ring h-9"
         onChange={(e) => setQuery(e.target.value)}
         value={query}
       />
