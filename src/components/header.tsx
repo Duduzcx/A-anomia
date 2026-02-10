@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import SearchBar from './search-bar';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
@@ -13,6 +13,16 @@ import { cn } from '@/lib/utils';
 export default function Header() {
   const { isLoggedIn } = useAuth();
   const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
 
   const navLinks = (
     <>
@@ -31,7 +41,10 @@ export default function Header() {
   );
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
+    <header className={cn(
+      "sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm transition-all duration-300",
+      scrolled ? "border-b border-border shadow-md" : "border-b border-transparent"
+    )}>
       <div className="container flex items-center justify-between h-16 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2 font-bold text-lg">

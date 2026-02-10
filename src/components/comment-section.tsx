@@ -73,7 +73,7 @@ export default function CommentSection({ postId, comments }: CommentSectionProps
                 <p className="mt-1 text-foreground/90">{comment.content}</p>
               </div>
             </div>
-          )).reverse() // Show newest comments first
+          ))
         ) : (
           <p className="py-8 text-center text-muted-foreground">Seja o primeiro a comentar.</p>
         )}

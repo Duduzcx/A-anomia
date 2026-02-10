@@ -116,7 +116,8 @@ const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 export async function getPosts(): Promise<Post[]> {
   await delay(100);
-  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  // Return a sorted copy to avoid mutating the original array
+  return [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export async function getPostById(id: string): Promise<Post | undefined> {
@@ -153,9 +154,10 @@ export async function deletePost(id: string): Promise<void> {
 
 export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
   await delay(100);
+  // Return a sorted copy (newest first)
   return comments
     .filter(c => c.postId === postId)
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export async function createComment(commentData: Omit<Comment, 'id' | 'date'>): Promise<Comment> {
