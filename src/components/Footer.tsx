@@ -3,17 +3,19 @@
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { useState } from 'react';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Instagram, Phone, Copyright } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
   const { isLoggedIn, login, logout } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const pathname = usePathname();
+  const isHome = pathname === '/';
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,8 +47,8 @@ export default function Footer() {
           <h4 className="font-semibold tracking-wider uppercase">Navegação</h4>
           <ul className="mt-4 space-y-2">
             <li><Link href="/" className="transition-colors text-muted-foreground hover:text-white">Início</Link></li>
-            <li><Link href="/#blog" className="transition-colors text-muted-foreground hover:text-white">Blog</Link></li>
-            <li><Link href="/#footer" className="transition-colors text-muted-foreground hover:text-white">Contato</Link></li>
+            <li><Link href={isHome ? '#blog' : '/#blog'} className="transition-colors text-muted-foreground hover:text-white">Blog</Link></li>
+            <li><Link href={isHome ? '#footer' : '/#footer'} className="transition-colors text-muted-foreground hover:text-white">Contato</Link></li>
             {isLoggedIn && (
               <li><Link href="/posts/new" className="transition-colors text-muted-foreground hover:text-white">Novo Post</Link></li>
             )}

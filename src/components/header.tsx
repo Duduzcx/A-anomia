@@ -23,16 +23,17 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const isHome = pathname === '/';
 
   const navLinks = (
     <>
       <Link href="/" className="transition-colors text-foreground/80 hover:text-foreground">
         Início
       </Link>
-      <Link href="/#blog" className="transition-colors text-foreground/80 hover:text-foreground">
+      <Link href={isHome ? "#blog" : "/#blog"} className="transition-colors text-foreground/80 hover:text-foreground">
         Blog
       </Link>
-      <Link href="/#footer" className="transition-colors text-foreground/80 hover:text-foreground">
+      <Link href={isHome ? "#footer" : "/#footer"} className="transition-colors text-foreground/80 hover:text-foreground">
         Contato
       </Link>
       {isLoggedIn && (

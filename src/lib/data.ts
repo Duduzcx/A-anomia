@@ -134,7 +134,7 @@ export async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' |
     author: 'Klebsu', // Hardcoded for now
     authorImage: 'https://picsum.photos/seed/authorKlebsu/40/40',
   };
-  posts.unshift(newPost);
+  posts = [newPost, ...posts];
   return newPost;
 }
 
@@ -142,8 +142,10 @@ export async function updatePost(id: string, postData: Partial<Post>): Promise<P
   await delay(500);
   const postIndex = posts.findIndex(p => p.id === id);
   if (postIndex === -1) return undefined;
-  posts[postIndex] = { ...posts[postIndex], ...postData };
-  return posts[postIndex];
+  
+  const updatedPost = { ...posts[postIndex], ...postData };
+  posts = posts.map(p => (p.id === id ? updatedPost : p));
+  return updatedPost;
 }
 
 export async function deletePost(id: string): Promise<void> {
@@ -167,6 +169,6 @@ export async function createComment(commentData: Omit<Comment, 'id' | 'date'>): 
     id: generateId(),
     date: new Date().toISOString(),
   };
-  comments.push(newComment);
+  comments = [...comments, newComment];
   return newComment;
 }
