@@ -82,7 +82,7 @@ export default function Footer() {
         <div>
           <h4 className="font-semibold tracking-wider uppercase">Contato</h4>
           <div className="flex gap-4 mt-4">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-white">
+            <a href="https://www.instagram.com/a_anomia_/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-white">
               <Instagram className="w-6 h-6" />
               <span className="sr-only">Instagram</span>
             </a>
