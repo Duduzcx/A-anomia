@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormState } from 'react-dom';
+import { useActionState, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -23,7 +22,7 @@ export default function EditPostForm({ post }: { post: Post }) {
   const [refineError, setRefineError] = useState<string | null>(null);
 
   const updatePostActionWithId = updatePostAction.bind(null, post.id);
-  const [updateState, formAction] = useFormState(updatePostActionWithId, { errors: {} });
+  const [updateState, formAction] = useActionState(updatePostActionWithId, { errors: {} });
 
   const handleRefine = async () => {
     setIsRefining(true);
@@ -39,7 +38,7 @@ export default function EditPostForm({ post }: { post: Post }) {
   };
 
   return (
-    <Card className="mt-8">
+    <Card className="mt-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
       <CardContent className="pt-6">
         <form action={formAction} className="space-y-6">
           <div className='space-y-2'>

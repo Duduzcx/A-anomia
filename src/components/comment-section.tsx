@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState, useEffect, useRef } from 'react';
 import { createCommentAction } from '@/app/actions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Comment } from '@/types';
@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { useEffect, useRef } from 'react';
 import { SubmitButton } from './submit-button';
 
 type CommentSectionProps = {
@@ -18,7 +17,7 @@ type CommentSectionProps = {
 };
 
 export default function CommentSection({ postId, comments }: CommentSectionProps) {
-  const [state, formAction] = useFormState(createCommentAction.bind(null, postId), { errors: {} });
+  const [state, formAction] = useActionState(createCommentAction.bind(null, postId), { errors: {}, success: false });
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {

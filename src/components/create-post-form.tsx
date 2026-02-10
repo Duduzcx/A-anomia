@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormState } from 'react-dom';
+import { useActionState, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -30,7 +29,7 @@ export default function CreatePostForm() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generateError, setGenerateError] = useState<string | null>(null);
 
-  const [createState, createFormAction] = useFormState(createPostAction, { errors: {} });
+  const [createState, createFormAction] = useActionState(createPostAction, { errors: {} });
 
   const handleGenerate = async () => {
     if (!topic) {
@@ -54,7 +53,7 @@ export default function CreatePostForm() {
   };
 
   return (
-    <div className="mt-8 space-y-8">
+    <div className="mt-8 space-y-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
        <form action={createFormAction} className="space-y-8">
         <Card>
           <CardHeader>
