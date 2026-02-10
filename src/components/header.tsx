@@ -16,7 +16,7 @@ export default function Header() {
 
   const navLinks = (
     <>
-      <Link href="/#blog" className={cn("transition-colors text-foreground/80 hover:text-foreground", pathname === '/' ? 'text-primary' : '')}>
+      <Link href="/#blog" className="transition-colors text-foreground/80 hover:text-foreground">
         Blog
       </Link>
       <Link href="/#footer" className="transition-colors text-foreground/80 hover:text-foreground">
