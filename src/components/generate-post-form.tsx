@@ -26,7 +26,7 @@ const philosophicalTopics = [
 
 export default function GeneratePostForm() {
   const [topic, setTopic] = useState('');
-  const [generatedContent, setGeneratedContent] = useState<{ title: string; content: string } | null>(null);
+  const [generatedContent, setGeneratedContent] = useState<{ title: string; subtitle: string; content: string } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -95,20 +95,43 @@ export default function GeneratePostForm() {
         <Card>
           <CardHeader>
             <CardTitle>2. Revise e Salve</CardTitle>
-            <CardDescription>Edite o conteúdo gerado e salve seu novo post.</CardDescription>
+            <CardDescription>Edite o conteúdo gerado, preencha os campos restantes e salve seu novo post.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <form action={createFormAction} className="space-y-6">
               <div className='space-y-2'>
                 <Label htmlFor="title" className="text-base">Título</Label>
                 <Input id="title" name="title" defaultValue={generatedContent.title} className="text-lg h-11" />
                 {createState.errors?.title && <p className="mt-1 text-sm text-destructive">{createState.errors.title[0]}</p>}
               </div>
+
+              <div className='space-y-2'>
+                <Label htmlFor="subtitle" className="text-base">Subtítulo</Label>
+                <Input id="subtitle" name="subtitle" defaultValue={generatedContent.subtitle} />
+                {createState.errors?.subtitle && <p className="mt-1 text-sm text-destructive">{createState.errors.subtitle[0]}</p>}
+              </div>
+
               <div className='space-y-2'>
                 <Label htmlFor="content" className="text-base">Conteúdo</Label>
                 <Textarea id="content" name="content" defaultValue={generatedContent.content} className="mt-2" rows={20} />
                 {createState.errors?.content && <p className="mt-1 text-sm text-destructive">{createState.errors.content[0]}</p>}
               </div>
+              
+              <div className='space-y-2'>
+                <Label htmlFor="imageUrl" className="text-base">URL da Imagem</Label>
+                <Input id="imageUrl" name="imageUrl" placeholder="https://picsum.photos/seed/..." />
+                {createState.errors?.imageUrl && <p className="mt-1 text-sm text-destructive">{createState.errors.imageUrl[0]}</p>}
+              </div>
+
+              <div className='space-y-2'>
+                <Label htmlFor="imageHint" className="text-base">Dica para Imagem (IA)</Label>
+                <Input id="imageHint" name="imageHint" placeholder="ex: filosofia abstrata" />
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Duas ou três palavras para busca de imagens.
+                </p>
+                {createState.errors?.imageHint && <p className="mt-1 text-sm text-destructive">{createState.errors.imageHint[0]}</p>}
+              </div>
+
               <div className='space-y-2'>
                 <Label htmlFor="tags" className="text-base">Tags</Label>
                 <Input id="tags" name="tags" placeholder="ex: ética, tecnologia, mente" />

@@ -15,9 +15,9 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
-      <div className="container flex items-center h-16 max-w-7xl">
+      <div className="container flex items-center justify-between h-16 max-w-7xl">
         {/* Left section */}
-        <div className="flex items-center justify-start flex-1">
+        <div className="flex items-center">
           <Logo />
         </div>
 
@@ -31,7 +31,7 @@ export default function Header() {
         </div>
 
         {/* Right section */}
-        <div className="flex items-center justify-end flex-1">
+        <div className="flex items-center justify-end">
           {/* Desktop actions */}
           <div className="items-center hidden gap-4 md:flex">
             {isLoggedIn && (

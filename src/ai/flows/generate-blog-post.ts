@@ -18,6 +18,7 @@ export type GenerateBlogPostInput = z.infer<typeof GenerateBlogPostInputSchema>;
 
 const GenerateBlogPostOutputSchema = z.object({
   title: z.string().describe('O título do post do blog.'),
+  subtitle: z.string().describe('Um subtítulo curto e envolvente para o post do blog.'),
   content: z.string().describe('O conteúdo do post do blog.'),
 });
 export type GenerateBlogPostOutput = z.infer<typeof GenerateBlogPostOutputSchema>;
@@ -44,6 +45,7 @@ Siga estas diretrizes gerais para o blog:
 
 Cada post de blog deve ter a seguinte estrutura:
 - Título cativante e reflexivo (ex: "Quando tudo parece óbvio demais, talvez nada esteja sendo pensado")
+- Subtítulo curto e envolvente
 - Introdução curta (1-2 parágrafos)
   - Apresente uma situação comum
   - Conecte-a com um problema filosófico
