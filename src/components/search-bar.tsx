@@ -2,15 +2,21 @@
 
 import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams, usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export default function SearchBar() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
   const [query, setQuery] = useState(searchParams.get('query')?.toString() || '');
 
   useEffect(() => {
+    // The search logic of automatically updating the URL should only apply to the homepage.
+    if (pathname !== '/') {
+      return;
+    }
+
     const handler = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
       if (query) {
@@ -24,7 +30,7 @@ export default function SearchBar() {
     return () => {
       clearTimeout(handler);
     };
-  }, [query, router, searchParams]);
+  }, [query, router, searchParams, pathname]);
 
   return (
     <div className="relative w-full">
