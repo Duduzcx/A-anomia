@@ -28,13 +28,13 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="py-12 mt-12 border-t bg-muted">
-        <div className="container flex justify-center">
+    <section id="author-area" className="w-full py-20 mt-16 border-t bg-secondary">
+        <div className="container max-w-lg mx-auto">
             {isLoggedIn ? (
-                 <Card className="w-full max-w-md">
+                 <Card className="bg-background/80">
                     <CardHeader className="text-center">
-                        <CardTitle>Bem-vindo, Autor</CardTitle>
-                        <CardDescription>Você está logado e pode gerenciar os posts do blog.</CardDescription>
+                        <CardTitle className="text-2xl">Bem-vindo, Autor</CardTitle>
+                        <CardDescription>Você está logado e pode gerenciar os posts.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                         <Button asChild>
@@ -44,9 +44,9 @@ export default function AdminLogin() {
                     </CardContent>
                  </Card>
             ) : (
-                <Card className="w-full max-w-md">
+                <Card className="bg-background/80">
                     <CardHeader className="text-center">
-                        <CardTitle>Área do Autor</CardTitle>
+                        <CardTitle className="text-2xl">Área do Autor</CardTitle>
                         <CardDescription>Faça login para criar e gerenciar posts.</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -54,9 +54,11 @@ export default function AdminLogin() {
                             <div className="space-y-2">
                                 <Label htmlFor="username">Usuário</Label>
                                 <Input 
-                                    id="username" 
+                                    id="username"
+                                    name="username"
                                     value={username} 
                                     onChange={(e) => setUsername(e.target.value)}
+                                    autoComplete="username"
                                 />
                             </div>
                             <div className="space-y-2">
@@ -64,8 +66,10 @@ export default function AdminLogin() {
                                 <Input 
                                     id="password" 
                                     type="password"
+                                    name="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    autoComplete="current-password"
                                 />
                             </div>
                             {error && <p className="text-sm text-center text-destructive">{error}</p>}
@@ -75,6 +79,6 @@ export default function AdminLogin() {
                 </Card>
             )}
         </div>
-    </div>
+    </section>
   );
 }

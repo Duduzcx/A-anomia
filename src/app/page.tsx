@@ -49,22 +49,22 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
         </div>
       </section>
       
-      <section className="py-16 bg-background sm:py-24">
-        <div className="container max-w-5xl mx-auto">
-            <div className="text-center">
+      <section className="py-20 bg-secondary sm:py-28">
+        <div className="container max-w-4xl mx-auto">
+            <div className="p-8 text-center bg-background rounded-xl">
                 <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">O que é Anomia?</h2>
-                <p className="max-w-2xl mx-auto mt-4 text-lg text-muted-foreground">
+                <p className="max-w-2xl mx-auto mt-6 text-lg leading-relaxed text-muted-foreground">
                     O termo, popularizado pelo sociólogo Émile Durkheim, descreve um estado de ausência de normas sociais, onde os laços que unem os indivíduos à sociedade se enfraquecem. Em nosso blog, usamos a "anomia" como ponto de partida para questionar as normas, explorar vazios morais e buscar novos sentidos em um mundo complexo.
                 </p>
             </div>
         </div>
       </section>
 
-      <section id="blog" className="container py-8 mx-auto max-w-7xl sm:py-12">
-            <div className="mb-8 text-center">
-                <h1 className="text-4xl font-bold tracking-tight font-headline">
-                    Blog
-                </h1>
+      <section id="blog" className="container py-16 mx-auto max-w-7xl sm:py-24">
+            <div className="mb-12 text-center">
+                <h2 className="text-4xl font-bold tracking-tight font-headline">
+                    Últimas Publicações
+                </h2>
             </div>
             <Suspense fallback={<div>Carregando...</div>}>
             {filteredPosts.length > 0 ? (
