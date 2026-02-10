@@ -28,7 +28,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="py-12 mt-12 bg-secondary">
+    <div className="py-12 mt-12 border-t bg-muted">
         <div className="container flex justify-center">
             {isLoggedIn ? (
                  <Card className="w-full max-w-md">

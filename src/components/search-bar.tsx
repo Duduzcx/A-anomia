@@ -28,11 +28,11 @@ export default function SearchBar() {
 
   return (
     <div className="relative w-full">
-      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-white/60" />
       <Input
         type="search"
-        placeholder="Buscar posts..."
-        className="w-full pl-8"
+        placeholder="Buscar..."
+        className="w-full pl-8 text-white bg-white/10 border-white/30 placeholder:text-white/60 focus:bg-white/20 focus:ring-white h-9"
         onChange={(e) => setQuery(e.target.value)}
         value={query}
       />
