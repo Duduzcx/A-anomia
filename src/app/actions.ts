@@ -34,9 +34,8 @@ export async function createPostAction(prevState: any, formData: FormData) {
   
   const tags = validatedFields.data.tags?.split(',').map(tag => tag.trim()).filter(Boolean) ?? [];
 
-  let newPost;
   try {
-    newPost = await createPost({ 
+    await createPost({ 
       title: validatedFields.data.title, 
       subtitle: validatedFields.data.subtitle,
       content: validatedFields.data.content,
@@ -51,7 +50,7 @@ export async function createPostAction(prevState: any, formData: FormData) {
   }
 
   revalidatePath('/');
-  redirect(`/posts/${newPost.id}`);
+  redirect(`/`);
 }
 
 export async function updatePostAction(id: string, prevState: any, formData: FormData) {
@@ -116,6 +115,7 @@ export async function createCommentAction(postId: string, prevState: any, formDa
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
+      success: false
     };
   }
 
@@ -129,7 +129,8 @@ export async function createCommentAction(postId: string, prevState: any, formDa
     return { errors: {}, success: true };
   } catch (error) {
     return {
-      errors: { _form: ['Falha ao adicionar o comentário.'] }
+      errors: { _form: ['Falha ao adicionar o comentário.'] },
+      success: false
     }
   }
 }
