@@ -26,6 +26,9 @@ export default function Header() {
 
   const navLinks = (
     <>
+      <Link href="/" className="transition-colors text-foreground/80 hover:text-foreground">
+        Início
+      </Link>
       <Link href="/#blog" className="transition-colors text-foreground/80 hover:text-foreground">
         Blog
       </Link>
