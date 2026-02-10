@@ -32,9 +32,9 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
-      <div className="container flex items-center justify-between h-16 max-w-7xl">
+      <div className="container flex items-center justify-between h-16 px-4 mx-auto max-w-7xl">
         <div className="flex items-center gap-8">
-          <Link href="/" className="font-bold text-lg">
+          <Link href="/" className="flex items-center gap-2 font-bold text-lg">
             A Anomia
           </Link>
           <nav className="items-center hidden gap-6 text-sm font-medium md:flex">

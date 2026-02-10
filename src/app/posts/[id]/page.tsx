@@ -17,7 +17,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
   const paragraphs = post.content.split('\n').filter(p => p.trim() !== '');
 
   return (
-    <div className="container max-w-4xl py-8 mx-auto sm:py-12 animate-fade-in">
+    <div className="container max-w-4xl px-4 py-8 mx-auto sm:py-12 animate-fade-in">
       <header className="mb-8">
         <p className="text-base font-semibold text-primary">
           {post.tags.join(' / ')}

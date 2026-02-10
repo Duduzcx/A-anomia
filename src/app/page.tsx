@@ -32,7 +32,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
           />
           <div className="absolute inset-0 bg-black/60" />
         </div>
-        <div className="container relative z-10 max-w-4xl mx-auto">
+        <div className="container relative z-10 max-w-4xl px-4 mx-auto">
           <h1 className="text-4xl font-extrabold tracking-tight scroll-m-20 font-headline lg:text-6xl">
             Explore as Profundezas do Pensamento
           </h1>
@@ -50,7 +50,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
       </section>
       
       <section className="py-20 bg-secondary sm:py-28 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-        <div className="container max-w-4xl mx-auto">
+        <div className="container max-w-4xl px-4 mx-auto">
             <div className="p-8 text-center bg-background rounded-xl">
                 <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">O que é Anomia?</h2>
                 <p className="max-w-2xl mx-auto mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -60,7 +60,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
         </div>
       </section>
 
-      <section id="blog" className="container py-16 mx-auto max-w-7xl sm:py-24 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+      <section id="blog" className="container px-4 py-16 mx-auto max-w-7xl sm:py-24 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <div className="mb-12 text-center">
                 <h2 className="text-4xl font-bold tracking-tight font-headline">
                     Últimas Publicações
