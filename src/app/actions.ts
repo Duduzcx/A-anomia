@@ -34,8 +34,9 @@ export async function createPostAction(prevState: any, formData: FormData) {
   
   const tags = validatedFields.data.tags?.split(',').map(tag => tag.trim()).filter(Boolean) ?? [];
 
+  let newPost;
   try {
-    await createPost({ 
+    newPost = await createPost({ 
       title: validatedFields.data.title, 
       subtitle: validatedFields.data.subtitle,
       content: validatedFields.data.content,
@@ -50,7 +51,8 @@ export async function createPostAction(prevState: any, formData: FormData) {
   }
 
   revalidatePath('/');
-  redirect(`/`);
+  revalidatePath(`/posts/${newPost.id}`);
+  redirect(`/posts/${newPost.id}`);
 }
 
 export async function updatePostAction(id: string, prevState: any, formData: FormData) {
@@ -142,9 +144,9 @@ export async function generatePostAction(topic: string) {
   try {
     const result = await generateBlogPost({ topic });
     return { data: result };
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
-    return { error: 'Falha ao gerar post com IA.' };
+    return { error: `Falha ao gerar post com IA: ${e.message}` };
   }
 }
 
@@ -155,8 +157,8 @@ export async function refinePostAction(title: string, content: string) {
   try {
     const result = await refineBlogPost({ title, content });
     return { data: result };
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
-    return { error: 'Falha ao refinar post com IA.' };
+    return { error: `Falha ao refinar post com IA: ${e.message}` };
   }
 }
