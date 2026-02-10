@@ -14,22 +14,18 @@ export default async function PostPage({ params }: { params: { id: string } }) {
   }
 
   const comments = await getCommentsByPostId(params.id);
-  const firstParagraph = post.content.split('\n')[0];
-  const restOfContent = post.content.split('\n').slice(1);
+  const paragraphs = post.content.split('\n').filter(p => p.trim() !== '');
 
   return (
     <div className="container max-w-4xl py-8 mx-auto sm:py-12">
       <header className="mb-8">
-        <p className="text-base font-bold text-primary">
+        <p className="text-base font-semibold text-primary">
           {post.tags.join(' / ')}
         </p>
-        <h1 className="mt-2 text-4xl font-bold tracking-tight font-headline md:text-5xl lg:text-6xl text-foreground">
+        <h1 className="mt-2 text-4xl font-bold tracking-tight font-headline md:text-5xl text-foreground">
           {post.title}
         </h1>
-        <p className="mt-6 text-xl text-muted-foreground">
-          {firstParagraph}
-        </p>
-        <div className="flex items-center gap-4 mt-6 py-3 text-sm border-t border-b text-muted-foreground">
+        <div className="flex items-center gap-4 mt-6 py-3 text-sm border-t border-b border-border/50 text-muted-foreground">
           <span>Por <strong>{post.author}</strong></span>
           <time dateTime={post.date}>
             {format(new Date(post.date), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
@@ -50,9 +46,9 @@ export default async function PostPage({ params }: { params: { id: string } }) {
           />
         </div>
 
-        <div className="mx-auto space-y-6 text-lg leading-relaxed max-w-prose text-foreground/90">
-          {restOfContent.map((paragraph, index) => (
-            paragraph.trim() && <p key={index}>{paragraph}</p>
+        <div className="mx-auto space-y-6 text-lg leading-relaxed max-w-prose text-foreground/80">
+          {paragraphs.map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
           ))}
         </div>
 
