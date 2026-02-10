@@ -52,7 +52,7 @@ export async function createPostAction(prevState: any, formData: FormData) {
 
   revalidatePath('/');
   revalidatePath(`/posts/${newPost.id}`);
-  redirect(`/posts/${newPost.id}`);
+  redirect(`/`);
 }
 
 export async function updatePostAction(id: string, prevState: any, formData: FormData) {
