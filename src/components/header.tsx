@@ -19,7 +19,7 @@ export default function Header() {
       <Link href="/#blog" className={cn("transition-colors text-foreground/80 hover:text-foreground", pathname === '/' ? 'text-primary' : '')}>
         Blog
       </Link>
-      <Link href="/#author-area" className="transition-colors text-foreground/80 hover:text-foreground">
+      <Link href="/#footer" className="transition-colors text-foreground/80 hover:text-foreground">
         Contato
       </Link>
       {isLoggedIn && (
@@ -32,15 +32,16 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
-      <div className="container flex items-center justify-between h-16 px-4 mx-auto max-w-7xl">
+      <div className="container flex items-center justify-between h-16 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2 font-bold text-lg">
             A Anomia
           </Link>
-          <nav className="items-center hidden gap-6 text-sm font-medium md:flex">
-            {navLinks}
-          </nav>
         </div>
+
+        <nav className="items-center hidden gap-6 text-sm font-medium md:flex">
+          {navLinks}
+        </nav>
 
         <div className="flex items-center gap-4">
             <div className="hidden w-full max-w-sm md:block">

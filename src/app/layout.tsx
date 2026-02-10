@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/header';
 import { cn } from '@/lib/utils';
 import { Providers } from './providers';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'A Anomia',
@@ -31,6 +32,7 @@ export default function RootLayout({
             {children}
           </main>
           <Toaster />
+          <Footer />
         </Providers>
       </body>
     </html>

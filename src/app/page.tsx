@@ -5,7 +5,6 @@ import { ArrowRight } from 'lucide-react';
 import { getPosts } from '@/lib/data';
 import PostCard from '@/components/post-card';
 import { Suspense } from 'react';
-import AdminLogin from '@/components/AdminLogin';
 
 export default async function HomePage({ searchParams }: { searchParams?: { query?: string; }; }) {
   const allPosts = await getPosts();
@@ -19,7 +18,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
   );
 
   return (
-    <>
+    <div className="px-4 sm:px-6 lg:px-8">
       <section className="relative w-full py-20 text-center text-white md:py-32 lg:py-40 animate-fade-in">
         <div className="absolute inset-0 w-full h-full">
           <Image
@@ -81,8 +80,6 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
             )}
             </Suspense>
         </section>
-
-      <AdminLogin />
-    </>
+    </div>
   );
 }
