@@ -3,7 +3,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 // This is a simple file-based database.
-// In a real-world application, you would use a proper database like Firestore, PostgreSQL, etc.
+// In a real-world application, you would use a proper database.
 
 const dbPath = path.join(process.cwd(), 'src', 'lib', 'db.json');
 
