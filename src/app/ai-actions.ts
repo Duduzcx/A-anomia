@@ -18,7 +18,7 @@ export async function refinePostAction(title: string, content: string) {
 
 export async function generatePostAction(topic: string) {
   if (!topic) {
-    return { error: 'O tópico не pode estar vazio.' };
+    return { error: 'O tópico não pode estar vazio.' };
   }
   try {
     const result = await generateBlogPost({ topic });

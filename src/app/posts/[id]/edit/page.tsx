@@ -1,7 +1,7 @@
 import EditPostForm from "@/components/edit-post-form";
 import { getPostById } from "@/lib/data";
 import { notFound } from "next/navigation";
-import { refinePostAction } from "@/app/refine-post-action";
+import { refinePostAction } from "@/app/ai-actions";
 
 export default async function EditPostPage({ params }: { params: { id: string } }) {
   const post = await getPostById(params.id);

@@ -1,5 +1,5 @@
 import CreatePostForm from "@/components/create-post-form";
-import { generatePostAction } from "@/app/generate-post-action";
+import { generatePostAction } from "@/app/ai-actions";
 
 export default function NewPostPage() {
   return (
