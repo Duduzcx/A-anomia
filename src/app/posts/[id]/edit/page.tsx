@@ -1,6 +1,6 @@
 import { getPostById } from "@/lib/data";
 import { notFound } from "next/navigation";
-import EditPostLoader from "@/components/edit-post-loader";
+import EditPostForm from "@/components/edit-post-form";
 
 export default async function EditPostPage({ params }: { params: { id: string } }) {
   const post = await getPostById(params.id);
@@ -17,7 +17,7 @@ export default async function EditPostPage({ params }: { params: { id: string } 
           Refine o conteúdo do seu post, atualize as tags e salve suas alterações.
         </p>
       </div>
-      <EditPostLoader post={post} />
+      <EditPostForm post={post} />
     </div>
   );
 }

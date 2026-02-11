@@ -1,4 +1,4 @@
-import CreatePostLoader from '@/components/create-post-loader';
+import CreatePostForm from '@/components/create-post-form';
 
 export default function NewPostPage() {
   return (
@@ -9,7 +9,7 @@ export default function NewPostPage() {
           Escreva um novo artigo para o blog preenchendo os campos abaixo.
         </p>
       </div>
-      <CreatePostLoader />
+      <CreatePostForm />
     </div>
   );
 }

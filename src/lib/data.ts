@@ -12,7 +12,7 @@ import {
   writeBatch,
   Timestamp,
 } from 'firebase/firestore';
-import { db } from './firebase';
+import { getDbInstance } from './firebase';
 import type { Post, Comment } from '@/types';
 
 const POSTS_COLLECTION = 'posts';
@@ -64,6 +64,7 @@ const commentFromFirestore = (docSnap: { id: string; data: () => any; }): Commen
 };
 
 export async function getPosts(): Promise<Post[]> {
+  const db = getDbInstance();
   const postsCollection = collection(db, POSTS_COLLECTION);
   const q = query(postsCollection, orderBy('date', 'desc'));
   const postsSnapshot = await getDocs(q);
@@ -71,6 +72,7 @@ export async function getPosts(): Promise<Post[]> {
 }
 
 export async function getPostById(id: string): Promise<Post | undefined> {
+  const db = getDbInstance();
   const postDocRef = doc(db, POSTS_COLLECTION, id);
   const postSnap = await getDoc(postDocRef);
 
@@ -81,6 +83,7 @@ export async function getPostById(id: string): Promise<Post | undefined> {
 }
 
 export async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' | 'authorImage'>): Promise<Post> {
+  const db = getDbInstance();
   const newPostData = {
     ...postData,
     date: new Date(),
@@ -98,6 +101,7 @@ export async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' |
 }
 
 export async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>): Promise<Post | undefined> {
+  const db = getDbInstance();
   const postDocRef = doc(db, POSTS_COLLECTION, id);
 
   const dataToUpdate: { [key: string]: any } = { ...postData };
@@ -110,6 +114,7 @@ export async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>
 }
 
 export async function deletePostAndComments(id: string): Promise<void> {
+  const db = getDbInstance();
   const batch = writeBatch(db);
   
   const postDocRef = doc(db, POSTS_COLLECTION, id);
@@ -126,12 +131,14 @@ export async function deletePostAndComments(id: string): Promise<void> {
 }
 
 export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
+  const db = getDbInstance();
   const q = query(collection(db, COMMENTS_COLLECTION), where('postId', '==', postId), orderBy('date', 'desc'));
   const commentsSnapshot = await getDocs(q);
   return commentsSnapshot.docs.map(commentFromFirestore);
 }
 
 export async function createCommentInDb(commentData: Omit<Comment, 'id' | 'date'>): Promise<Comment> {
+  const db = getDbInstance();
   const newCommentData = {
     ...commentData,
     date: new Date(),
