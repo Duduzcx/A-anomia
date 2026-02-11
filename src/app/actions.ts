@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { db } from '@/lib/firebase-admin';
+import * as jsonDb from '@/lib/data';
 import type { Post, Comment } from '@/types';
 
 // Helper to convert Firestore doc to our Post type
@@ -37,7 +38,8 @@ function docToComment(doc: FirebaseFirestore.DocumentSnapshot): Comment {
 
 
 export async function getPosts(): Promise<Post[]> {
-  if (!db) return [];
+  if (!db) return jsonDb.getPosts();
+
   const snapshot = await db.collection('posts').orderBy('date', 'desc').get();
   if (snapshot.empty) {
     return [];
@@ -46,7 +48,8 @@ export async function getPosts(): Promise<Post[]> {
 }
 
 export async function getPostById(id: string): Promise<Post | undefined> {
-  if (!db) return undefined;
+  if (!db) return jsonDb.getPostById(id);
+
   const doc = await db.collection('posts').doc(id).get();
   if (!doc.exists) {
     return undefined;
@@ -55,25 +58,32 @@ export async function getPostById(id: string): Promise<Post | undefined> {
 }
 
 async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' | 'authorImage'>): Promise<Post> {
-  if (!db) throw new Error('Database not configured. Set FIREBASE_SERVICE_ACCOUNT environment variable.');
+    const fullPostData = {
+        ...postData,
+        author: 'Klebsu',
+        authorImage: 'https://picsum.photos/seed/authorKlebsu/40/40',
+    };
+
+    if (!db) {
+        return jsonDb.createPost(fullPostData);
+    }
   
-  const newPostData = {
-    ...postData,
-    date: new Date().toISOString(),
-    author: 'Klebsu', // Hardcoded as before
-    authorImage: 'https://picsum.photos/seed/authorKlebsu/40/40',
-  };
+    const newPostData = {
+        ...fullPostData,
+        date: new Date().toISOString(),
+    };
   
-  const docRef = await db.collection('posts').add(newPostData);
+    const docRef = await db.collection('posts').add(newPostData);
   
-  return {
-    id: docRef.id,
-    ...newPostData
-  };
+    return {
+        id: docRef.id,
+        ...newPostData
+    };
 }
 
 async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>): Promise<Post | undefined> {
-    if (!db) throw new Error('Database not configured. Set FIREBASE_SERVICE_ACCOUNT environment variable.');
+    if (!db) return jsonDb.updatePost(id, postData);
+
     const postRef = db.collection('posts').doc(id);
     const doc = await postRef.get();
 
@@ -93,7 +103,8 @@ async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>): Prom
 }
 
 export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
-  if (!db) return [];
+  if (!db) return jsonDb.getCommentsByPostId(postId);
+
   const snapshot = await db.collection('comments').where('postId', '==', postId).orderBy('date', 'desc').get();
   if (snapshot.empty) {
     return [];
@@ -102,7 +113,8 @@ export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
 }
 
 async function createCommentInDb(commentData: Omit<Comment, 'id' | 'date'>): Promise<Comment> {
-  if (!db) throw new Error('Database not configured. Set FIREBASE_SERVICE_ACCOUNT environment variable.');
+  if (!db) return jsonDb.createCommentInDb(commentData);
+  
   const newCommentData = {
     ...commentData,
     date: new Date().toISOString(),
@@ -117,7 +129,8 @@ async function createCommentInDb(commentData: Omit<Comment, 'id' | 'date'>): Pro
 }
 
 async function deletePostAndComments(id: string) {
-    if (!db) throw new Error('Database not configured. Set FIREBASE_SERVICE_ACCOUNT environment variable.');
+    if (!db) return jsonDb.deletePostAndComments(id);
+
     const postRef = db.collection('posts').doc(id);
     const commentsSnapshot = await db.collection('comments').where('postId', '==', id).get();
 
@@ -172,7 +185,7 @@ export async function createPostAction(prevState: any, formData: FormData) {
       imageHint: data.imageHint || 'filosofia abstrata'
     });
   } catch (error: any) {
-    console.error("Firebase Error:", error);
+    console.error("Database Error:", error);
     return {
       errors: { _form: [`Falha ao criar o post: ${error.message}`] }
     }
@@ -216,7 +229,7 @@ export async function updatePostAction(id: string, prevState: any, formData: For
             imageHint: data.imageHint || oldPost.imageHint,
         });
     } catch (error: any) {
-      console.error("Firebase Error:", error);
+      console.error("Database Error:", error);
       return {
           errors: { _form: [`Falha ao atualizar o post: ${error.message}`] }
       }
@@ -266,7 +279,7 @@ export async function createCommentAction(postId: string, prevState: any, formDa
     revalidatePath(`/posts/${postId}`);
     return { errors: {}, success: true };
   } catch (error: any) {
-    console.error("Firebase Error:", error);
+    console.error("Database Error:", error);
     return {
       errors: { _form: [`Falha ao adicionar o comentário: ${error.message}`] },
       success: false
