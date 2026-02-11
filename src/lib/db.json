@@ -1,4 +1,33 @@
 {
-  "posts": [],
+  "posts": [
+    {
+      "title": "testando aqui man",
+      "subtitle": "opa blz",
+      "content": "Confiabilidade: O aplicativo agora depende de um sistema de arquivos local simples e confiável, sem complexidades de conexão externa.",
+      "tags": [
+        "respeito"
+      ],
+      "imageUrl": "https://picsum.photos/seed/1770844494996/1200/630",
+      "imageHint": "filosofia",
+      "id": "1770844494997",
+      "date": "2026-02-11T21:14:54.997Z",
+      "author": "Klebsu",
+      "authorImage": "https://picsum.photos/seed/authorKlebsu/40/40"
+    },
+    {
+      "title": "O que isso significa para você:",
+      "subtitle": "O Erro foi Corrigido: O erro \"An une",
+      "content": "Implementação de um Banco de Dados Local: Modifiquei o arquivo src/app/actions.ts para que ele salve e leia todos os dados (posts e comentários) diretamente de um arquivo local no seu projeto (src/lib/db.json).\r\nO que isso significa para você:\r\n\r\nO Erro foi Corrigido: O erro \"An unexpected response was received from the server\" não acontecerá mais, pois a causa raiz foi eliminada.\r\nFuncionalidade Restaurada: Você pode criar, editar, excluir e visualizar posts e comentários normalmente.\r\nConfiabilidade: O aplicativo agora depende de um sistema de arquivos local simples e confiável, sem complexidades de conexão externa.",
+      "tags": [
+        "respeito"
+      ],
+      "imageUrl": "https://picsum.photos/seed/1770844454629/1200/630",
+      "imageHint": "filosofia",
+      "id": "1770844454629",
+      "date": "2026-02-11T21:14:14.629Z",
+      "author": "Klebsu",
+      "authorImage": "https://picsum.photos/seed/authorKlebsu/40/40"
+    }
+  ],
   "comments": []
 }

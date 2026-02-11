@@ -23,8 +23,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = (user: string, pass: string) => {
-    // Hardcoded credentials: user 'klebsu', password 'klebsu123'
-    if (user === 'klebsu' && pass === 'klebsu123') {
+    // Hardcoded credentials: user 'Klebersoncesare@gmail.com', password 'klebsu123'
+    if (user === 'Klebersoncesare@gmail.com' && pass === 'klebsu123') {
       sessionStorage.setItem(AUTH_STORAGE_KEY, 'loggedIn');
       setIsLoggedIn(true);
       return true;
