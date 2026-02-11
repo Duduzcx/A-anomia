@@ -44,11 +44,17 @@ export async function getPosts(): Promise<Post[]> {
     return [];
   }
 
-  const snapshot = await db.collection('posts').orderBy('date', 'desc').get();
-  if (snapshot.empty) {
+  try {
+    const snapshot = await db.collection('posts').orderBy('date', 'desc').get();
+    if (snapshot.empty) {
+      return [];
+    }
+    return snapshot.docs.map(docToPost);
+  } catch (error) {
+    console.error("Error fetching posts from Firestore:", error);
+    // Return empty array to prevent the app from crashing.
     return [];
   }
-  return snapshot.docs.map(docToPost);
 }
 
 export async function getPostById(id: string): Promise<Post | undefined> {
@@ -57,11 +63,17 @@ export async function getPostById(id: string): Promise<Post | undefined> {
     return undefined;
   }
 
-  const doc = await db.collection('posts').doc(id).get();
-  if (!doc.exists) {
+  try {
+    const doc = await db.collection('posts').doc(id).get();
+    if (!doc.exists) {
+      return undefined;
+    }
+    return docToPost(doc);
+  } catch (error) {
+    console.error(`Error fetching post with id ${id} from Firestore:`, error);
+    // Return undefined to prevent the app from crashing.
     return undefined;
   }
-  return docToPost(doc);
 }
 
 async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' | 'authorImage'>): Promise<Post> {
@@ -116,11 +128,17 @@ export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
     return [];
   }
 
-  const snapshot = await db.collection('comments').where('postId', '==', postId).orderBy('date', 'desc').get();
-  if (snapshot.empty) {
+  try {
+    const snapshot = await db.collection('comments').where('postId', '==', postId).orderBy('date', 'desc').get();
+    if (snapshot.empty) {
+      return [];
+    }
+    return snapshot.docs.map(docToComment);
+  } catch (error) {
+    console.error(`Error fetching comments for post ${postId} from Firestore:`, error);
+    // Return empty array to prevent the app from crashing.
     return [];
   }
-  return snapshot.docs.map(docToComment);
 }
 
 async function createCommentInDb(commentData: Omit<Comment, 'id' | 'date'>): Promise<Comment> {
