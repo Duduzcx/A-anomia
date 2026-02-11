@@ -64,7 +64,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
       </div>
 
       <div className="fixed bottom-8 right-8 z-50">
-          <Button asChild size="icon" className="w-14 h-14 rounded-full shadow-lg">
+          <Button asChild size="icon" className="w-14 h-14 rounded-full shadow-lg animate-float">
               <Link href="/">
                   <ArrowLeft className="w-6 h-6" />
                   <span className="sr-only">Voltar para a página inicial</span>
