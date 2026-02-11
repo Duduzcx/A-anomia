@@ -1,13 +1,4 @@
-import dynamic from 'next/dynamic';
-
-const CreatePostForm = dynamic(() => import('@/components/create-post-form'), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full text-center p-8">
-      <p>Carregando formulário...</p>
-    </div>
-  ),
-});
+import CreatePostLoader from '@/components/create-post-loader';
 
 export default function NewPostPage() {
   return (
@@ -18,7 +9,7 @@ export default function NewPostPage() {
           Escreva um novo artigo para o blog preenchendo os campos abaixo.
         </p>
       </div>
-      <CreatePostForm />
+      <CreatePostLoader />
     </div>
   );
 }

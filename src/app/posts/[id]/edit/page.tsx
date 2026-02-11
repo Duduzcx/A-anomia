@@ -1,15 +1,6 @@
 import { getPostById } from "@/lib/data";
 import { notFound } from "next/navigation";
-import dynamic from "next/dynamic";
-
-const EditPostForm = dynamic(() => import("@/components/edit-post-form"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full text-center p-8">
-      <p>Carregando editor...</p>
-    </div>
-  ),
-});
+import EditPostLoader from "@/components/edit-post-loader";
 
 export default async function EditPostPage({ params }: { params: { id: string } }) {
   const post = await getPostById(params.id);
@@ -26,7 +17,7 @@ export default async function EditPostPage({ params }: { params: { id: string } 
           Refine o conteúdo do seu post, atualize as tags e salve suas alterações.
         </p>
       </div>
-      <EditPostForm post={post} />
+      <EditPostLoader post={post} />
     </div>
   );
 }
