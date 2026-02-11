@@ -21,6 +21,14 @@ const COMMENTS_COLLECTION = 'comments';
 // Helper to convert Firestore post data to match app types
 const postFromFirestore = (docSnap: { id: string; data: () => any; }): Post => {
   const data = docSnap.data();
+  let date;
+  if (data.date && typeof data.date.toDate === 'function') {
+    date = (data.date as Timestamp).toDate().toISOString();
+  } else {
+    // Use a consistent fallback date to prevent hydration errors
+    date = new Date(0).toISOString(); 
+  }
+
   return {
     id: docSnap.id,
     title: data.title || '',
@@ -28,7 +36,7 @@ const postFromFirestore = (docSnap: { id: string; data: () => any; }): Post => {
     content: data.content || '',
     author: data.author || 'Anônimo',
     authorImage: data.authorImage || '',
-    date: (data.date as Timestamp)?.toDate().toISOString() || new Date().toISOString(),
+    date: date,
     tags: data.tags || [],
     imageUrl: data.imageUrl || '',
     imageHint: data.imageHint || '',
@@ -38,12 +46,20 @@ const postFromFirestore = (docSnap: { id: string; data: () => any; }): Post => {
 // Helper to convert Firestore comment data to match app types
 const commentFromFirestore = (docSnap: { id: string; data: () => any; }): Comment => {
   const data = docSnap.data();
+  let date;
+  if (data.date && typeof data.date.toDate === 'function') {
+    date = (data.date as Timestamp).toDate().toISOString();
+  } else {
+    // Use a consistent fallback date to prevent hydration errors
+    date = new Date(0).toISOString();
+  }
+  
   return {
     id: docSnap.id,
     postId: data.postId || '',
     author: data.author || 'Anônimo',
     content: data.content || '',
-    date: (data.date as Timestamp)?.toDate().toISOString() || new Date().toISOString(),
+    date: date,
   };
 };
 
