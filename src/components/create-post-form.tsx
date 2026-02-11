@@ -7,76 +7,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { createPostAction } from '@/app/actions';
 import { SubmitButton } from './submit-button';
-import { Button } from './ui/button';
-import { Loader2, Sparkles } from 'lucide-react';
 
-type CreatePostFormProps = {
-    generatePostAction: (topic: string) => Promise<{
-        data?: {
-            title: string;
-            subtitle: string;
-            content: string;
-        };
-        error?: string;
-    }>;
-};
-
-export default function CreatePostForm({ generatePostAction }: CreatePostFormProps) {
+export default function CreatePostForm() {
   const [createState, createFormAction] = useActionState(createPostAction, { errors: {} });
   
-  const [topic, setTopic] = useState('');
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
   const [content, setContent] = useState('');
 
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generateError, setGenerateError] = useState<string | null>(null);
-
-  const handleGenerate = async () => {
-    setIsGenerating(true);
-    setGenerateError(null);
-    const result = await generatePostAction(topic);
-    setIsGenerating(false);
-    if (result.error) {
-      setGenerateError(result.error);
-    } else if (result.data) {
-      setTitle(result.data.title);
-      setSubtitle(result.data.subtitle);
-      setContent(result.data.content);
-    }
-  };
-
   return (
     <div className="mt-8 space-y-8">
-      <Card>
-        <CardHeader>
-          <CardTitle>Gerar Post com IA</CardTitle>
-          <CardDescription>
-            Insira um tema filosófico e deixe a IA criar um rascunho para você.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-0 space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="topic">Tema para a IA</Label>
-            <Input id="topic" name="topic" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="Ex: A natureza do tempo" />
-          </div>
-          <Button type="button" variant="outline" size="sm" onClick={handleGenerate} disabled={isGenerating || !topic}>
-            {isGenerating ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Gerando...
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-4 h-4 mr-2" />
-                Gerar com IA
-              </>
-            )}
-          </Button>
-          {generateError && <p className="mt-2 text-sm text-destructive">{generateError}</p>}
-        </CardContent>
-      </Card>
-
       <form action={createFormAction} className="space-y-8">
         <Card>
           <CardHeader>

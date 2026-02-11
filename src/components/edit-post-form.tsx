@@ -2,45 +2,27 @@
 
 import { useActionState, useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { updatePostAction } from '@/app/actions';
-import { Loader2, Sparkles } from 'lucide-react';
 import type { Post } from '@/types';
 import { SubmitButton } from './submit-button';
 
 type EditPostFormProps = {
   post: Post;
-  refinePostAction: (title: string, content: string) => Promise<{ data?: { refinedTitle: string; refinedContent: string; }; error?: string; }>;
 }
 
-export default function EditPostForm({ post, refinePostAction }: EditPostFormProps) {
+export default function EditPostForm({ post }: EditPostFormProps) {
   const [title, setTitle] = useState(post.title);
   const [subtitle, setSubtitle] = useState(post.subtitle);
   const [content, setContent] = useState(post.content);
   const [imageUrl, setImageUrl] = useState(post.imageUrl);
   const [imageHint, setImageHint] = useState(post.imageHint);
   const [tags, setTags] = useState(post.tags.join(', '));
-  const [isRefining, setIsRefining] = useState(false);
-  const [refineError, setRefineError] = useState<string | null>(null);
 
   const updatePostActionWithId = updatePostAction.bind(null, post.id);
   const [updateState, formAction] = useActionState(updatePostActionWithId, { errors: {} });
-
-  const handleRefine = async () => {
-    setIsRefining(true);
-    setRefineError(null);
-    const result = await refinePostAction(title, content);
-    setIsRefining(false);
-    if (result.error) {
-      setRefineError(result.error);
-    } else if (result.data) {
-      setTitle(result.data.refinedTitle);
-      setContent(result.data.refinedContent);
-    }
-  };
 
   return (
     <Card className="mt-8">
@@ -61,21 +43,7 @@ export default function EditPostForm({ post, refinePostAction }: EditPostFormPro
           <div className='space-y-2'>
             <div className="flex items-center justify-between">
               <Label htmlFor="content" className="text-base">Conteúdo</Label>
-              <Button type="button" variant="outline" size="sm" onClick={handleRefine} disabled={isRefining}>
-                {isRefining ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Refinando...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    Refinar com IA
-                  </>
-                )}
-              </Button>
             </div>
-            {refineError && <p className="mt-1 text-sm text-destructive">{refineError}</p>}
             <Textarea id="content" name="content" value={content} onChange={(e) => setContent(e.target.value)} className="mt-2" rows={20} />
             {updateState.errors?.content && <p className="mt-1 text-sm text-destructive">{updateState.errors.content[0]}</p>}
           </div>

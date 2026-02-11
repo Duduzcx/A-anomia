@@ -1,5 +1,4 @@
 import CreatePostForm from "@/components/create-post-form";
-import { generatePostAction } from "@/app/ai-actions";
 
 export default function NewPostPage() {
   return (
@@ -10,7 +9,7 @@ export default function NewPostPage() {
           Escreva um novo artigo para o blog preenchendo os campos abaixo.
         </p>
       </div>
-      <CreatePostForm generatePostAction={generatePostAction} />
+      <CreatePostForm />
     </div>
   );
 }
