@@ -9,12 +9,9 @@ import { createPostAction } from '@/app/actions';
 import { SubmitButton } from './submit-button';
 import { Button } from './ui/button';
 import { Loader2, Sparkles } from 'lucide-react';
+import { generatePostAction } from '@/app/ai-actions';
 
-type CreatePostFormProps = {
-  generatePostAction: (topic: string) => Promise<{ data?: { title: string; subtitle: string; content: string; }; error?: string; }>;
-}
-
-export default function CreatePostForm({ generatePostAction }: CreatePostFormProps) {
+export default function CreatePostForm() {
   const [createState, createFormAction] = useActionState(createPostAction, { errors: {} });
   
   const [topic, setTopic] = useState('');
