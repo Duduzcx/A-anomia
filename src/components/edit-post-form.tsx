@@ -7,12 +7,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { updatePostAction } from '@/app/actions';
-import { refinePostAction } from '@/app/ai-actions';
 import { Loader2, Sparkles } from 'lucide-react';
 import type { Post } from '@/types';
 import { SubmitButton } from './submit-button';
 
-export default function EditPostForm({ post }: { post: Post }) {
+type EditPostFormProps = {
+  post: Post;
+  refinePostAction: (title: string, content: string) => Promise<{ data?: { refinedTitle: string; refinedContent: string; }; error?: string; }>;
+}
+
+export default function EditPostForm({ post, refinePostAction }: EditPostFormProps) {
   const [title, setTitle] = useState(post.title);
   const [subtitle, setSubtitle] = useState(post.subtitle);
   const [content, setContent] = useState(post.content);
