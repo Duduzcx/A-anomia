@@ -1,6 +1,15 @@
-import EditPostForm from "@/components/edit-post-form";
 import { getPostById } from "@/lib/data";
 import { notFound } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const EditPostForm = dynamic(() => import("@/components/edit-post-form"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full text-center p-8">
+      <p>Carregando editor...</p>
+    </div>
+  ),
+});
 
 export default async function EditPostPage({ params }: { params: { id: string } }) {
   const post = await getPostById(params.id);
