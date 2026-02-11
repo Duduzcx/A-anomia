@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { createPost, updatePost, deletePost as deletePostFromDb, createComment as createCommentInDb } from '@/lib/data';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { generateBlogPost } from '@/ai/flows/generate-blog-post';
 import { refineBlogPost } from '@/ai/flows/refine-blog-post';
 
 const PostSchema = z.object({
@@ -51,7 +50,6 @@ export async function createPostAction(prevState: any, formData: FormData) {
   }
 
   revalidatePath('/');
-  revalidatePath(`/posts/${newPost.id}`);
   redirect(`/`);
 }
 
@@ -134,19 +132,6 @@ export async function createCommentAction(postId: string, prevState: any, formDa
       errors: { _form: ['Falha ao adicionar o comentário.'] },
       success: false
     }
-  }
-}
-
-export async function generatePostAction(topic: string) {
-  if (!topic) {
-    return { error: 'O tópico não pode estar vazio.' };
-  }
-  try {
-    const result = await generateBlogPost({ topic });
-    return { data: result };
-  } catch (e: any) {
-    console.error(e);
-    return { error: `Falha ao gerar post com IA: ${e.message}` };
   }
 }
 

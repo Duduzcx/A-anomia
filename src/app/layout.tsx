@@ -19,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="pt" className="h-full" style={{scrollBehavior: 'smooth'}}>
       <head>
+        <link rel="icon" href="/favicon.png" sizes="any" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
@@ -28,7 +29,7 @@ export default function RootLayout({
       )}>
         <Providers>
           <Header />
-          <main className="flex-grow">
+          <main className="flex-grow w-full">
             {children}
           </main>
           <Toaster />
