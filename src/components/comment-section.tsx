@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect, useRef } from 'react';
+import { useActionState, useEffect, useRef, useState } from 'react';
 import { createCommentAction } from '@/app/actions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Comment } from '@/types';
@@ -19,6 +19,12 @@ type CommentSectionProps = {
 export default function CommentSection({ postId, comments }: CommentSectionProps) {
   const [state, formAction] = useActionState(createCommentAction.bind(null, postId), { errors: {}, success: false });
   const formRef = useRef<HTMLFormElement>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
 
   useEffect(() => {
     if (state.success) {
@@ -67,7 +73,9 @@ export default function CommentSection({ postId, comments }: CommentSectionProps
                 <div className="flex items-center gap-2">
                   <p className="font-semibold">{comment.author}</p>
                   <p className="text-xs text-muted-foreground">
-                    {formatDistanceToNow(new Date(comment.date), { addSuffix: true, locale: ptBR })}
+                    {isClient
+                      ? formatDistanceToNow(new Date(comment.date), { addSuffix: true, locale: ptBR })
+                      : '...'}
                   </p>
                 </div>
                 <p className="mt-1 text-foreground/90">{comment.content}</p>
