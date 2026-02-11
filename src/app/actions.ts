@@ -1,7 +1,7 @@
 'use server';
 
 import { z } from 'zod';
-import { createPost, updatePost, deletePost as deletePostFromDb, createComment as createCommentInDb } from '@/lib/data';
+import { createPost, updatePost, deletePostAndComments, createCommentInDb } from '@/lib/data';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { refineBlogPost } from '@/ai/flows/refine-blog-post';
@@ -93,7 +93,7 @@ export async function updatePostAction(id: string, prevState: any, formData: For
 
 export async function deletePostAction(id: string) {
     try {
-        await deletePostFromDb(id);
+        await deletePostAndComments(id);
     } catch (e) {
         throw new Error('Falha ao excluir o post');
     }

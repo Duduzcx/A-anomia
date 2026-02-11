@@ -77,7 +77,7 @@ export async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>
   return await getPostById(id);
 }
 
-export async function deletePost(id: string): Promise<void> {
+export async function deletePostAndComments(id: string): Promise<void> {
   const batch = writeBatch(db);
   
   const postDocRef = doc(db, POSTS_COLLECTION, id);
@@ -99,7 +99,7 @@ export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
   return commentsSnapshot.docs.map(fromFirestore);
 }
 
-export async function createComment(commentData: Omit<Comment, 'id' | 'date'>): Promise<Comment> {
+export async function createCommentInDb(commentData: Omit<Comment, 'id' | 'date'>): Promise<Comment> {
   const newCommentData = {
     ...commentData,
     date: new Date(),
