@@ -37,6 +37,7 @@ function docToComment(doc: FirebaseFirestore.DocumentSnapshot): Comment {
 
 
 export async function getPosts(): Promise<Post[]> {
+  if (!db) return [];
   const snapshot = await db.collection('posts').orderBy('date', 'desc').get();
   if (snapshot.empty) {
     return [];
@@ -45,6 +46,7 @@ export async function getPosts(): Promise<Post[]> {
 }
 
 export async function getPostById(id: string): Promise<Post | undefined> {
+  if (!db) return undefined;
   const doc = await db.collection('posts').doc(id).get();
   if (!doc.exists) {
     return undefined;
@@ -53,6 +55,8 @@ export async function getPostById(id: string): Promise<Post | undefined> {
 }
 
 async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' | 'authorImage'>): Promise<Post> {
+  if (!db) throw new Error('Database not configured. Set FIREBASE_SERVICE_ACCOUNT environment variable.');
+  
   const newPostData = {
     ...postData,
     date: new Date().toISOString(),
@@ -69,6 +73,7 @@ async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' | 'autho
 }
 
 async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>): Promise<Post | undefined> {
+    if (!db) throw new Error('Database not configured. Set FIREBASE_SERVICE_ACCOUNT environment variable.');
     const postRef = db.collection('posts').doc(id);
     const doc = await postRef.get();
 
@@ -88,6 +93,7 @@ async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>): Prom
 }
 
 export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
+  if (!db) return [];
   const snapshot = await db.collection('comments').where('postId', '==', postId).orderBy('date', 'desc').get();
   if (snapshot.empty) {
     return [];
@@ -96,6 +102,7 @@ export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
 }
 
 async function createCommentInDb(commentData: Omit<Comment, 'id' | 'date'>): Promise<Comment> {
+  if (!db) throw new Error('Database not configured. Set FIREBASE_SERVICE_ACCOUNT environment variable.');
   const newCommentData = {
     ...commentData,
     date: new Date().toISOString(),
@@ -110,6 +117,7 @@ async function createCommentInDb(commentData: Omit<Comment, 'id' | 'date'>): Pro
 }
 
 async function deletePostAndComments(id: string) {
+    if (!db) throw new Error('Database not configured. Set FIREBASE_SERVICE_ACCOUNT environment variable.');
     const postRef = db.collection('posts').doc(id);
     const commentsSnapshot = await db.collection('comments').where('postId', '==', id).get();
 
@@ -224,9 +232,8 @@ export async function deletePostAction(id: string, formData: FormData) {
         await deletePostAndComments(id);
     } catch (e: any) {
         console.error("Falha ao excluir o post:", e);
-        return {
-          errors: { _form: [`Falha ao excluir o post: ${e.message}`] }
-        }
+        // This is a workaround to show the error on the client until redirects can be fixed
+        redirect(`/?error=${encodeURIComponent(e.message)}`);
     }
     revalidatePath('/');
     redirect('/');
