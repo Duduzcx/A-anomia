@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -10,12 +10,22 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const AUTH_STORAGE_KEY = 'anomia-auth-status';
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const storedStatus = sessionStorage.getItem(AUTH_STORAGE_KEY);
+    if (storedStatus === 'loggedIn') {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const login = (user: string, pass: string) => {
     // Hardcoded credentials: user 'klebsu', password 'klebsu123'
     if (user === 'klebsu' && pass === 'klebsu123') {
+      sessionStorage.setItem(AUTH_STORAGE_KEY, 'loggedIn');
       setIsLoggedIn(true);
       return true;
     }
@@ -23,7 +33,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return false;
   };
 
-  const logout = () => setIsLoggedIn(false);
+  const logout = () => {
+    sessionStorage.removeItem(AUTH_STORAGE_KEY);
+    setIsLoggedIn(false);
+  };
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
