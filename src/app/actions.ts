@@ -200,7 +200,7 @@ function deletePostAndComments(id: string) {
     writeDb({ posts: updatedPosts, comments: updatedComments });
 }
 
-export async function deletePostAction(id: string) {
+export async function deletePostAction(id: string, formData: FormData) {
     try {
         deletePostAndComments(id);
     } catch (e: any) {
