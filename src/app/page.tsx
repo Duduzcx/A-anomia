@@ -36,14 +36,14 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
               <div className="absolute inset-0 bg-black/60" />
             </div>
             <div className="container relative z-10 max-w-4xl px-4 mx-auto">
-              <h1 className="text-4xl font-extrabold tracking-tight scroll-m-20 font-headline lg:text-6xl">
+              <h1 className="text-4xl font-extrabold tracking-tight scroll-m-20 font-headline lg:text-6xl animate-shine bg-[linear-gradient(110deg,hsl(var(--foreground)),45%,hsl(var(--primary)),55%,hsl(var(--foreground)))] bg-[length:250%_100%] bg-clip-text text-transparent">
                 Explore as Profundezas do Pensamento
               </h1>
               <p className="mt-6 text-lg text-gray-300 md:text-xl">
                 "A Anomia" é o seu espaço para reflexão filosófica. Mergulhe em ensaios que desafiam o senso comum e exploram as grandes questões da vida, da ética à existência, em um mundo em constante mudança.
               </p>
               <div className="mt-10">
-                <Button asChild size="lg">
+                <Button asChild size="lg" className="animate-float">
                   <Link href="#blog">
                     Ler o Blog <ArrowRight className="ml-2" />
                   </Link>
