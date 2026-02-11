@@ -82,8 +82,8 @@ async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' | 'autho
     }
     const fullPostData = {
         ...postData,
-        author: 'Klebsu',
-        authorImage: 'https://picsum.photos/seed/authorKlebsu/40/40',
+        author: 'A Anomia',
+        authorImage: 'https://picsum.photos/seed/authorAAnomia/40/40',
     };
 
     const newPostData = {
