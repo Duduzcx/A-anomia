@@ -1,5 +1,3 @@
-'use server';
-
 /**
  * @fileOverview A flow to refine a draft blog post using AI to improve its clarity, tone, and philosophical depth.
  *

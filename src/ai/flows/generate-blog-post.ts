@@ -1,5 +1,3 @@
-'use server';
-
 /**
  * @fileOverview An AI agent to generate philosophical blog posts.
  *
