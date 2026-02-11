@@ -18,7 +18,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
   );
 
   return (
-    <div>
+    <div className="w-full">
       <section className="relative w-full py-20 text-center text-white md:py-32 lg:py-40 animate-fade-in">
         <div className="absolute inset-0 w-full h-full">
           <Image
@@ -48,7 +48,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
         </div>
       </section>
       
-      <section className="py-20 bg-secondary sm:py-28 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+      <section className="w-full py-20 bg-secondary sm:py-28 animate-fade-in" style={{ animationDelay: '0.2s' }}>
         <div className="container max-w-4xl px-4 mx-auto">
             <div className="p-8 text-center bg-background rounded-xl">
                 <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">O que é Anomia?</h2>
