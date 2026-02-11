@@ -1,98 +1,115 @@
+import {
+  collection,
+  query,
+  getDocs,
+  getDoc,
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  orderBy,
+  where,
+  writeBatch,
+  Timestamp,
+} from 'firebase/firestore';
+import { db } from './firebase';
 import type { Post, Comment } from '@/types';
-import fs from 'fs/promises';
-import path from 'path';
 
-// This is a simple file-based database.
-// In a real-world application, you would use a proper database.
+const POSTS_COLLECTION = 'posts';
+const COMMENTS_COLLECTION = 'comments';
 
-const dbPath = path.join(process.cwd(), 'src', 'lib', 'db.json');
-
-async function readDb(): Promise<{ posts: Post[], comments: Comment[] }> {
-    try {
-        const data = await fs.readFile(dbPath, 'utf-8');
-        return JSON.parse(data);
-    } catch (error: any) {
-        // If the file doesn't exist or there's an error, return initial structure
-        if (error.code === 'ENOENT') {
-            const initialData = {
-              posts: [],
-              comments: []
-            };
-            await writeDb(initialData);
-            return initialData;
-        }
-        console.error("Error reading database file:", error);
-        return { posts: [], comments: [] };
-    }
-}
-
-async function writeDb(data: { posts: Post[], comments: Comment[] }): Promise<void> {
-    await fs.writeFile(dbPath, JSON.stringify(data, null, 2), 'utf-8');
-}
-
-const generateId = () => Math.random().toString(36).substring(2, 9);
+// Helper to convert Firestore data to match app types
+const fromFirestore = (docSnap: {
+  id: string;
+  data: () => any;
+}): any => {
+  const data = docSnap.data();
+  return {
+    id: docSnap.id,
+    ...data,
+    date: (data.date as Timestamp).toDate().toISOString(),
+  };
+};
 
 export async function getPosts(): Promise<Post[]> {
-  const { posts } = await readDb();
-  return [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const postsCollection = collection(db, POSTS_COLLECTION);
+  const q = query(postsCollection, orderBy('date', 'desc'));
+  const postsSnapshot = await getDocs(q);
+  return postsSnapshot.docs.map(fromFirestore);
 }
 
 export async function getPostById(id: string): Promise<Post | undefined> {
-  const { posts } = await readDb();
-  return posts.find(p => p.id === id);
+  const postDocRef = doc(db, POSTS_COLLECTION, id);
+  const postSnap = await getDoc(postDocRef);
+
+  if (!postSnap.exists()) {
+    return undefined;
+  }
+  return fromFirestore(postSnap);
 }
 
 export async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' | 'authorImage'>): Promise<Post> {
-  const db = await readDb();
-  const newPost: Post = {
+  const newPostData = {
     ...postData,
-    id: generateId(),
-    date: new Date().toISOString(),
+    date: new Date(),
     author: 'Klebsu', // Hardcoded for now
     authorImage: 'https://picsum.photos/seed/authorKlebsu/40/40',
   };
-  db.posts.unshift(newPost);
-  await writeDb(db);
-  return newPost;
+  
+  const docRef = await addDoc(collection(db, POSTS_COLLECTION), newPostData);
+
+  return {
+    ...newPostData,
+    id: docRef.id,
+    date: newPostData.date.toISOString(),
+  };
 }
 
 export async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>): Promise<Post | undefined> {
-  const db = await readDb();
-  const postIndex = db.posts.findIndex(p => p.id === id);
-  if (postIndex === -1) return undefined;
-  
-  const updatedPost = { ...db.posts[postIndex], ...postData };
-  db.posts[postIndex] = updatedPost;
-  await writeDb(db);
-  return updatedPost;
+  const postDocRef = doc(db, POSTS_COLLECTION, id);
+
+  const dataToUpdate: { [key: string]: any } = { ...postData };
+  if (dataToUpdate.date) {
+    dataToUpdate.date = new Date(dataToUpdate.date);
+  }
+
+  await updateDoc(postDocRef, dataToUpdate);
+  return await getPostById(id);
 }
 
 export async function deletePost(id: string): Promise<void> {
-  const db = await readDb();
-  const initialPostCount = db.posts.length;
-  db.posts = db.posts.filter(p => p.id !== id);
+  const batch = writeBatch(db);
   
-  if (db.posts.length < initialPostCount) {
-      db.comments = db.comments.filter(c => c.postId !== id);
-      await writeDb(db);
-  }
+  const postDocRef = doc(db, POSTS_COLLECTION, id);
+  batch.delete(postDocRef);
+  
+  const commentsQuery = query(collection(db, COMMENTS_COLLECTION), where('postId', '==', id));
+  const commentsSnapshot = await getDocs(commentsQuery);
+  
+  commentsSnapshot.forEach(commentDoc => {
+    batch.delete(commentDoc.ref);
+  });
+  
+  await batch.commit();
 }
 
 export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
-  const { comments } = await readDb();
-  return comments
-    .filter(c => c.postId === postId)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const q = query(collection(db, COMMENTS_COLLECTION), where('postId', '==', postId), orderBy('date', 'desc'));
+  const commentsSnapshot = await getDocs(q);
+  return commentsSnapshot.docs.map(fromFirestore);
 }
 
 export async function createComment(commentData: Omit<Comment, 'id' | 'date'>): Promise<Comment> {
-  const db = await readDb();
-  const newComment: Comment = {
+  const newCommentData = {
     ...commentData,
-    id: generateId(),
-    date: new Date().toISOString(),
+    date: new Date(),
   };
-  db.comments.push(newComment);
-  await writeDb(db);
-  return newComment;
+  
+  const docRef = await addDoc(collection(db, COMMENTS_COLLECTION), newCommentData);
+  
+  return {
+    ...newCommentData,
+    id: docRef.id,
+    date: newCommentData.date.toISOString(),
+  };
 }
