@@ -3,159 +3,108 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import {
-  collection,
-  query,
-  getDocs,
-  getDoc,
-  doc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  orderBy,
-  where,
-  writeBatch,
-  Timestamp,
-} from 'firebase/firestore';
-import { getDbInstance } from '@/lib/firebase';
+import fs from 'fs';
+import path from 'path';
 import type { Post, Comment } from '@/types';
 
-const POSTS_COLLECTION = 'posts';
-const COMMENTS_COLLECTION = 'comments';
+// Path to the JSON database file
+const dbPath = path.resolve(process.cwd(), 'src/lib/db.json');
 
-// Helper to convert Firestore post data to match app types
-const postFromFirestore = (docSnap: { id: string; data: () => any; }): Post => {
-  const data = docSnap.data();
-  let date;
-  if (data.date && typeof data.date.toDate === 'function') {
-    date = (data.date as Timestamp).toDate().toISOString();
-  } else {
-    // Use a consistent fallback date to prevent hydration errors
-    date = new Date(0).toISOString(); 
-  }
-
-  return {
-    id: docSnap.id,
-    title: data.title || '',
-    subtitle: data.subtitle || '',
-    content: data.content || '',
-    author: data.author || 'Anônimo',
-    authorImage: data.authorImage || '',
-    date: date,
-    tags: data.tags || [],
-    imageUrl: data.imageUrl || '',
-    imageHint: data.imageHint || '',
-  };
+type DbData = {
+  posts: Post[];
+  comments: Comment[];
 };
 
-// Helper to convert Firestore comment data to match app types
-const commentFromFirestore = (docSnap: { id: string; data: () => any; }): Comment => {
-  const data = docSnap.data();
-  let date;
-  if (data.date && typeof data.date.toDate === 'function') {
-    date = (data.date as Timestamp).toDate().toISOString();
-  } else {
-    // Use a consistent fallback date to prevent hydration errors
-    date = new Date(0).toISOString();
+// Helper to read the database
+function readDb(): DbData {
+  try {
+    const fileContent = fs.readFileSync(dbPath, 'utf-8');
+    return JSON.parse(fileContent);
+  } catch (error) {
+    // If the file doesn't exist or is empty, return a default structure
+    return { posts: [], comments: [] };
   }
-  
-  return {
-    id: docSnap.id,
-    postId: data.postId || '',
-    author: data.author || 'Anônimo',
-    content: data.content || '',
-    date: date,
-  };
-};
+}
+
+// Helper to write to the database
+function writeDb(data: DbData) {
+  fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf-8');
+}
 
 export async function getPosts(): Promise<Post[]> {
-  const db = getDbInstance();
-  const postsCollection = collection(db, POSTS_COLLECTION);
-  const q = query(postsCollection, orderBy('date', 'desc'));
-  const postsSnapshot = await getDocs(q);
-  return postsSnapshot.docs.map(postFromFirestore);
+  const db = readDb();
+  // Sort by date descending
+  return db.posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export async function getPostById(id: string): Promise<Post | undefined> {
-  const db = getDbInstance();
-  const postDocRef = doc(db, POSTS_COLLECTION, id);
-  const postSnap = await getDoc(postDocRef);
-
-  if (!postSnap.exists()) {
-    return undefined;
-  }
-  return postFromFirestore(postSnap);
+  const db = readDb();
+  return db.posts.find(p => p.id === id);
 }
 
 async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' | 'authorImage'>): Promise<Post> {
-  const db = getDbInstance();
-  const newPostData = {
+  const db = readDb();
+  const newPost: Post = {
     ...postData,
-    date: new Date(),
-    author: 'Klebsu', // Hardcoded for now
+    id: Date.now().toString(), // Simple ID generation
+    date: new Date().toISOString(),
+    author: 'Klebsu', // Hardcoded as before
     authorImage: 'https://picsum.photos/seed/authorKlebsu/40/40',
   };
   
-  const docRef = await addDoc(collection(db, POSTS_COLLECTION), newPostData);
+  db.posts.unshift(newPost); // Add to the beginning of the array
+  writeDb(db);
 
-  return {
-    ...newPostData,
-    id: docRef.id,
-    date: newPostData.date.toISOString(),
-  };
+  return newPost;
 }
 
 async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>): Promise<Post | undefined> {
-  const db = getDbInstance();
-  const postDocRef = doc(db, POSTS_COLLECTION, id);
+  const db = readDb();
+  const postIndex = db.posts.findIndex(p => p.id === id);
 
-  const dataToUpdate: { [key: string]: any } = { ...postData };
-  if (dataToUpdate.date) {
-    dataToUpdate.date = new Date(dataToUpdate.date);
+  if (postIndex === -1) {
+    return undefined;
   }
 
-  await updateDoc(postDocRef, dataToUpdate);
-  return await getPostById(id);
+  const updatedPost = { ...db.posts[postIndex], ...postData };
+  if(postData.date) {
+    updatedPost.date = new Date(postData.date).toISOString();
+  }
+
+  db.posts[postIndex] = updatedPost as Post;
+  writeDb(db);
+  
+  return updatedPost as Post;
 }
 
 export async function deletePostAndComments(id: string): Promise<void> {
-  const db = getDbInstance();
-  const batch = writeBatch(db);
-  
-  const postDocRef = doc(db, POSTS_COLLECTION, id);
-  batch.delete(postDocRef);
-  
-  const commentsQuery = query(collection(db, COMMENTS_COLLECTION), where('postId', '==', id));
-  const commentsSnapshot = await getDocs(commentsQuery);
-  
-  commentsSnapshot.forEach(commentDoc => {
-    batch.delete(commentDoc.ref);
-  });
-  
-  await batch.commit();
+    const db = readDb();
+    
+    const updatedPosts = db.posts.filter(p => p.id !== id);
+    const updatedComments = db.comments.filter(c => c.postId !== id);
+
+    writeDb({ posts: updatedPosts, comments: updatedComments });
 }
 
 export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
-  const db = getDbInstance();
-  const q = query(collection(db, COMMENTS_COLLECTION), where('postId', '==', postId), orderBy('date', 'desc'));
-  const commentsSnapshot = await getDocs(q);
-  return commentsSnapshot.docs.map(commentFromFirestore);
+  const db = readDb();
+  const postComments = db.comments.filter(c => c.postId === postId);
+  // Sort by date descending
+  return postComments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 async function createCommentInDb(commentData: Omit<Comment, 'id' | 'date'>): Promise<Comment> {
-  const db = getDbInstance();
-  const newCommentData = {
+  const db = readDb();
+  const newComment: Comment = {
     ...commentData,
-    date: new Date(),
+    id: Date.now().toString() + Math.random().toString(36).substring(2), // Simple unique ID
+    date: new Date().toISOString(),
   };
-  
-  const docRef = await addDoc(collection(db, COMMENTS_COLLECTION), newCommentData);
-  
-  return {
-    ...newCommentData,
-    id: docRef.id,
-    date: newCommentData.date.toISOString(),
-  };
+
+  db.comments.unshift(newComment);
+  writeDb(db);
+
+  return newComment;
 }
 
 
@@ -188,9 +137,8 @@ export async function createPostAction(prevState: any, formData: FormData) {
   const imageUrl = data.imageUrl || `https://picsum.photos/seed/${Date.now()}/1200/630`;
   const tags = data.tags?.split(',').map(tag => tag.trim()).filter(Boolean) ?? [];
 
-  let newPost;
   try {
-    newPost = await createPost({ 
+    await createPost({ 
       title: data.title, 
       subtitle: data.subtitle,
       content: data.content,
