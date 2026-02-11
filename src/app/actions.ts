@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { createPost, updatePost, deletePostAndComments, createCommentInDb, getPostById } from '@/lib/data';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { refineBlogPost } from '@/ai/flows/refine-blog-post';
 
 const PostSchema = z.object({
   title: z.string().min(3, { message: 'O título deve ter pelo menos 3 caracteres.' }),
@@ -140,18 +139,5 @@ export async function createCommentAction(postId: string, prevState: any, formDa
       errors: { _form: ['Falha ao adicionar o comentário.'] },
       success: false
     }
-  }
-}
-
-export async function refinePostAction(title: string, content: string) {
-  if (!title || !content) {
-    return { error: 'O título e o conteúdo não podem estar vazios.' };
-  }
-  try {
-    const result = await refineBlogPost({ title, content });
-    return { data: result };
-  } catch (e: any) {
-    console.error(e);
-    return { error: `Falha ao refinar post com IA: ${e.message}` };
   }
 }
