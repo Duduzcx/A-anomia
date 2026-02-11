@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { getPosts } from '@/lib/data';
+import { getPosts } from '@/app/actions';
 import PostCard from '@/components/post-card';
 import { Suspense } from 'react';
 

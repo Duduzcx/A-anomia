@@ -1,4 +1,4 @@
-import { getPostById } from "@/lib/data";
+import { getPostById } from "@/app/actions";
 import { notFound } from "next/navigation";
 import EditPostForm from "@/components/edit-post-form";
 

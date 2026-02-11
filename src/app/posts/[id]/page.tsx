@@ -1,4 +1,4 @@
-import { getPostById, getCommentsByPostId } from '@/lib/data';
+import { getPostById, getCommentsByPostId } from '@/app/actions';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
