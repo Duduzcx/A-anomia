@@ -1,19 +1,73 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { createPostAction } from '@/app/actions';
 import { SubmitButton } from './submit-button';
+import { Button } from './ui/button';
+import { Loader2, Sparkles } from 'lucide-react';
+import { generatePostAction } from '@/app/ai-actions';
 
 export default function CreatePostForm() {
   const [createState, createFormAction] = useActionState(createPostAction, { errors: {} });
+  
+  const [topic, setTopic] = useState('');
+  const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [content, setContent] = useState('');
+
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generateError, setGenerateError] = useState<string | null>(null);
+
+  const handleGenerate = async () => {
+    setIsGenerating(true);
+    setGenerateError(null);
+    const result = await generatePostAction(topic);
+    setIsGenerating(false);
+    if (result.error) {
+      setGenerateError(result.error);
+    } else if (result.data) {
+      setTitle(result.data.title);
+      setSubtitle(result.data.subtitle);
+      setContent(result.data.content);
+    }
+  };
 
   return (
     <div className="mt-8 space-y-8">
-       <form action={createFormAction} className="space-y-8">
+      <Card>
+        <CardHeader>
+          <CardTitle>Gerar Post com IA</CardTitle>
+          <CardDescription>
+            Insira um tema filosófico e deixe a IA criar um rascunho para você.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-0 space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="topic">Tema para a IA</Label>
+            <Input id="topic" name="topic" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="Ex: A natureza do tempo" />
+          </div>
+          <Button type="button" variant="outline" size="sm" onClick={handleGenerate} disabled={isGenerating || !topic}>
+            {isGenerating ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Gerando...
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4 mr-2" />
+                Gerar com IA
+              </>
+            )}
+          </Button>
+          {generateError && <p className="mt-2 text-sm text-destructive">{generateError}</p>}
+        </CardContent>
+      </Card>
+
+      <form action={createFormAction} className="space-y-8">
         <Card>
           <CardHeader>
             <CardTitle>Escreva e Publique seu Post</CardTitle>
@@ -22,19 +76,19 @@ export default function CreatePostForm() {
           <CardContent className="pt-6 space-y-6">
               <div className='space-y-2'>
                 <Label htmlFor="title" className="text-base">Título</Label>
-                <Input id="title" name="title" defaultValue="" className="text-lg h-11" />
+                <Input id="title" name="title" value={title} onChange={(e) => setTitle(e.target.value)} className="text-lg h-11" />
                 {createState.errors?.title && <p className="mt-1 text-sm text-destructive">{createState.errors.title[0]}</p>}
               </div>
 
               <div className='space-y-2'>
                 <Label htmlFor="subtitle" className="text-base">Subtítulo</Label>
-                <Input id="subtitle" name="subtitle" defaultValue="" />
+                <Input id="subtitle" name="subtitle" value={subtitle} onChange={(e) => setSubtitle(e.target.value)} />
                 {createState.errors?.subtitle && <p className="mt-1 text-sm text-destructive">{createState.errors.subtitle[0]}</p>}
               </div>
 
               <div className='space-y-2'>
                 <Label htmlFor="content" className="text-base">Conteúdo</Label>
-                <Textarea id="content" name="content" defaultValue="" className="mt-2" rows={20} />
+                <Textarea id="content" name="content" value={content} onChange={(e) => setContent(e.target.value)} className="mt-2" rows={20} />
                 {createState.errors?.content && <p className="mt-1 text-sm text-destructive">{createState.errors.content[0]}</p>}
               </div>
               
