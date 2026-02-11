@@ -44,24 +44,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-@layer utilities {
-  .animated-background {
-    background-color: hsl(var(--background));
-    background-image: 
-      /* Technological glowing orbs */
-      radial-gradient(at 80% 20%, hsl(var(--primary) / 0.15) 0px, transparent 50%),
-      radial-gradient(at 20% 80%, hsl(var(--secondary) / 0.2) 0px, transparent 50%),
-      
-      /* Base moving gradient */
-      linear-gradient(
-        -45deg,
-        hsl(var(--background)),
-        hsl(var(--secondary)),
-        hsl(var(--background)),
-        hsl(var(--secondary))
-      );
-    background-size: 100% 100%, 100% 100%, 400% 400%;
-    animation: gradient 15s ease infinite;
-  }
-}

@@ -23,7 +23,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
     <div className="w-full">
       {!isSearch && (
         <>
-          <section className="relative w-full py-20 text-center text-white md:py-32 lg:py-40 animate-fade-in">
+          <section className="relative w-full py-20 text-center text-white md:py-32 lg:py-40">
             <div className="absolute inset-0 w-full h-full">
               <Image
                 src="https://picsum.photos/seed/philosophy-hero/1920/1080"
@@ -52,7 +52,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
             </div>
           </section>
           
-          <section className="w-full py-20 bg-secondary sm:py-28 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <section className="w-full py-20 bg-secondary sm:py-28">
             <div className="container max-w-4xl px-4 mx-auto">
                 <div className="p-8 text-center bg-background rounded-xl">
                     <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">O que é Anomia?</h2>
@@ -65,7 +65,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
         </>
       )}
 
-      <section id="blog" className="container px-4 py-16 mx-auto max-w-7xl sm:py-24 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+      <section id="blog" className="container px-4 py-16 mx-auto max-w-7xl sm:py-24">
             <div className="mb-12 text-center">
                 <h2 className="text-4xl font-bold tracking-tight font-headline">
                   {isSearch ? `Resultados para "${query}"` : 'Últimas Publicações'}

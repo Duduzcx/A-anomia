@@ -12,7 +12,7 @@ export default function CreatePostForm() {
   const [createState, createFormAction] = useActionState(createPostAction, { errors: {} });
 
   return (
-    <div className="mt-8 space-y-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+    <div className="mt-8 space-y-8">
        <form action={createFormAction} className="space-y-8">
         <Card>
           <CardHeader>

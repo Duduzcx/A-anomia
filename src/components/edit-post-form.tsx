@@ -38,7 +38,7 @@ export default function EditPostForm({ post }: { post: Post }) {
   };
 
   return (
-    <Card className="mt-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+    <Card className="mt-8">
       <CardContent className="pt-6">
         <form action={formAction} className="space-y-6">
           <div className='space-y-2'>
