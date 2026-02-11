@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Instagram, Phone, Copyright } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function Footer() {
   const { isLoggedIn, login, logout } = useAuth();
@@ -16,6 +16,7 @@ export default function Footer() {
   const [error, setError] = useState('');
   const pathname = usePathname();
   const isHome = pathname === '/';
+  const router = useRouter();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,7 +105,7 @@ export default function Footer() {
                     <h4 className="font-semibold">Bem-vindo, Autor</h4>
                     <p className="text-sm text-muted-foreground">Você está logado. O que vamos criar hoje?</p>
                     <div className="flex flex-col gap-2 mt-4 sm:flex-row">
-                        <Button asChild><Link href="/posts/new">Adicionar Novo Post</Link></Button>
+                        <Button onClick={() => router.push('/posts/new')}>Adicionar Novo Post</Button>
                         <Button variant="outline" onClick={logout}>Sair</Button>
                     </div>
                 </div>
