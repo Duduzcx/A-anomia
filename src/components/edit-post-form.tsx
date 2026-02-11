@@ -51,6 +51,9 @@ export default function EditPostForm({ post }: EditPostFormProps) {
           <div className='space-y-2'>
             <Label htmlFor="imageUrl" className="text-base">URL da Imagem</Label>
             <Input id="imageUrl" name="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+            <p className="mt-1 text-sm text-muted-foreground">
+              Dica: Use o site <a href="https://picsum.photos/" target="_blank" rel="noopener noreferrer" className="underline">picsum.photos</a> para pegar links de imagens. Ex: <code>https://picsum.photos/1200/630</code>.
+            </p>
             {updateState.errors?.imageUrl && <p className="mt-1 text-sm text-destructive">{updateState.errors.imageUrl[0]}</p>}
           </div>
 

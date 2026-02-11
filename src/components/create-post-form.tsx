@@ -44,7 +44,10 @@ export default function CreatePostForm() {
               
               <div className='space-y-2'>
                 <Label htmlFor="imageUrl" className="text-base">URL da Imagem</Label>
-                <Input id="imageUrl" name="imageUrl" placeholder="https://picsum.photos/seed/..." />
+                <Input id="imageUrl" name="imageUrl" placeholder="Deixe em branco para uma imagem aleatória" />
+                 <p className="mt-1 text-sm text-muted-foreground">
+                  Dica: Use o site <a href="https://picsum.photos/" target="_blank" rel="noopener noreferrer" className="underline">picsum.photos</a> para pegar links de imagens. Ex: <code>https://picsum.photos/1200/630</code>.
+                </p>
                 {createState.errors?.imageUrl && <p className="mt-1 text-sm text-destructive">{createState.errors.imageUrl[0]}</p>}
               </div>
 
