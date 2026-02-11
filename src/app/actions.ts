@@ -4,8 +4,9 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { db } from '@/lib/firebase-admin';
-import * as jsonDb from '@/lib/data';
 import type { Post, Comment } from '@/types';
+
+const DB_ERROR_MESSAGE = 'Database not configured. Set FIREBASE_SERVICE_ACCOUNT environment variable.';
 
 // Helper to convert Firestore doc to our Post type
 function docToPost(doc: FirebaseFirestore.DocumentSnapshot): Post {
@@ -38,7 +39,10 @@ function docToComment(doc: FirebaseFirestore.DocumentSnapshot): Comment {
 
 
 export async function getPosts(): Promise<Post[]> {
-  if (!db) return jsonDb.getPosts();
+  if (!db) {
+    console.warn(DB_ERROR_MESSAGE);
+    return [];
+  }
 
   const snapshot = await db.collection('posts').orderBy('date', 'desc').get();
   if (snapshot.empty) {
@@ -48,7 +52,10 @@ export async function getPosts(): Promise<Post[]> {
 }
 
 export async function getPostById(id: string): Promise<Post | undefined> {
-  if (!db) return jsonDb.getPostById(id);
+  if (!db) {
+    console.warn(DB_ERROR_MESSAGE);
+    return undefined;
+  }
 
   const doc = await db.collection('posts').doc(id).get();
   if (!doc.exists) {
@@ -58,16 +65,15 @@ export async function getPostById(id: string): Promise<Post | undefined> {
 }
 
 async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' | 'authorImage'>): Promise<Post> {
+    if (!db) {
+        throw new Error(DB_ERROR_MESSAGE);
+    }
     const fullPostData = {
         ...postData,
         author: 'Klebsu',
         authorImage: 'https://picsum.photos/seed/authorKlebsu/40/40',
     };
 
-    if (!db) {
-        return jsonDb.createPost(fullPostData);
-    }
-  
     const newPostData = {
         ...fullPostData,
         date: new Date().toISOString(),
@@ -82,7 +88,9 @@ async function createPost(postData: Omit<Post, 'id' | 'date' | 'author' | 'autho
 }
 
 async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>): Promise<Post | undefined> {
-    if (!db) return jsonDb.updatePost(id, postData);
+    if (!db) {
+        throw new Error(DB_ERROR_MESSAGE);
+    }
 
     const postRef = db.collection('posts').doc(id);
     const doc = await postRef.get();
@@ -103,7 +111,10 @@ async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>): Prom
 }
 
 export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
-  if (!db) return jsonDb.getCommentsByPostId(postId);
+  if (!db) {
+    console.warn(DB_ERROR_MESSAGE);
+    return [];
+  }
 
   const snapshot = await db.collection('comments').where('postId', '==', postId).orderBy('date', 'desc').get();
   if (snapshot.empty) {
@@ -113,7 +124,9 @@ export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
 }
 
 async function createCommentInDb(commentData: Omit<Comment, 'id' | 'date'>): Promise<Comment> {
-  if (!db) return jsonDb.createCommentInDb(commentData);
+  if (!db) {
+    throw new Error(DB_ERROR_MESSAGE);
+  }
   
   const newCommentData = {
     ...commentData,
@@ -129,7 +142,9 @@ async function createCommentInDb(commentData: Omit<Comment, 'id' | 'date'>): Pro
 }
 
 async function deletePostAndComments(id: string) {
-    if (!db) return jsonDb.deletePostAndComments(id);
+    if (!db) {
+        throw new Error(DB_ERROR_MESSAGE);
+    }
 
     const postRef = db.collection('posts').doc(id);
     const commentsSnapshot = await db.collection('comments').where('postId', '==', id).get();
