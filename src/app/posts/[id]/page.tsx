@@ -21,7 +21,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className="container max-w-4xl px-4 py-8 mx-auto sm:py-12">
+      <div className="container max-w-4xl px-4 py-8 mx-auto sm:py-12 animate-in fade-in-0 slide-in-from-top-4 duration-500">
         <header className="mb-8">
           <p className="text-base font-semibold text-primary">
             {post.tags.join(' / ')}

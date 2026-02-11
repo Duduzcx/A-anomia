@@ -9,14 +9,14 @@ type PostCardProps = {
 
 export default function PostCard({ post }: PostCardProps) {
   return (
-    <Card className="flex flex-col overflow-hidden transition-transform duration-300 ease-in-out border-border group bg-secondary hover:-translate-y-1">
+    <Card className="flex flex-col overflow-hidden transition-transform duration-300 ease-in-out border-border group bg-secondary hover:-translate-y-2">
       <Link href={`/posts/${post.id}`} className="flex flex-col h-full">
         <div className="relative w-full h-48 overflow-hidden">
           <Image
             src={post.imageUrl}
             alt={post.title}
             fill
-            className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+            className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             data-ai-hint={post.imageHint}
           />

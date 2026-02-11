@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { Instagram, Phone, Copyright } from 'lucide-react';
+import { Instagram, Copyright } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 
 export default function Footer() {
@@ -86,10 +86,6 @@ export default function Footer() {
             <a href="https://www.instagram.com/a_anomia_/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-white">
               <Instagram className="w-6 h-6" />
               <span className="sr-only">Instagram</span>
-            </a>
-            <a href="https://wa.me/551199999999" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-white">
-              <Phone className="w-6 h-6" />
-              <span className="sr-only">WhatsApp</span>
             </a>
           </div>
         </div>
