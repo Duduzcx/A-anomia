@@ -77,15 +77,6 @@ async function updatePost(id: string, postData: Partial<Omit<Post, 'id'>>): Prom
   return updatedPost as Post;
 }
 
-export async function deletePostAndComments(id: string): Promise<void> {
-    const db = readDb();
-    
-    const updatedPosts = db.posts.filter(p => p.id !== id);
-    const updatedComments = db.comments.filter(c => c.postId !== id);
-
-    writeDb({ posts: updatedPosts, comments: updatedComments });
-}
-
 export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
   const db = readDb();
   const postComments = db.comments.filter(c => c.postId === postId);
@@ -200,11 +191,21 @@ export async function updatePostAction(id: string, prevState: any, formData: For
     redirect(`/posts/${id}`);
 }
 
+function deletePostAndComments(id: string) {
+    const db = readDb();
+    
+    const updatedPosts = db.posts.filter(p => p.id !== id);
+    const updatedComments = db.comments.filter(c => c.postId !== id);
+
+    writeDb({ posts: updatedPosts, comments: updatedComments });
+}
+
 export async function deletePostAction(id: string) {
     try {
-        await deletePostAndComments(id);
-    } catch (e) {
-        throw new Error('Falha ao excluir o post');
+        deletePostAndComments(id);
+    } catch (e: any) {
+        console.error("Falha ao excluir o post:", e);
+        throw new Error(`Falha ao excluir o post: ${e.message}`);
     }
     revalidatePath('/');
     redirect('/');
