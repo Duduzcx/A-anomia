@@ -1,7 +1,7 @@
 'use server';
 
 import { z } from 'zod';
-import { createPost, updatePost, deletePostAndComments, createCommentInDb } from '@/lib/data';
+import { createPost, updatePost, deletePostAndComments, createCommentInDb, getPostById } from '@/lib/data';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { refineBlogPost } from '@/ai/flows/refine-blog-post';
@@ -10,7 +10,7 @@ const PostSchema = z.object({
   title: z.string().min(3, { message: 'O título deve ter pelo menos 3 caracteres.' }),
   subtitle: z.string().min(3, { message: 'O subtítulo deve ter pelo menos 3 caracteres.' }),
   content: z.string().min(10, { message: 'O conteúdo deve ter pelo menos 10 caracteres.' }),
-  imageUrl: z.string().url({ message: 'Por favor, insira uma URL de imagem válida.' }),
+  imageUrl: z.string().url({ message: 'Por favor, insira uma URL de imagem válida.' }).or(z.literal('')).optional(),
   imageHint: z.string().optional(),
   tags: z.string().optional(),
 });
@@ -31,17 +31,19 @@ export async function createPostAction(prevState: any, formData: FormData) {
     };
   }
   
-  const tags = validatedFields.data.tags?.split(',').map(tag => tag.trim()).filter(Boolean) ?? [];
+  const data = validatedFields.data;
+  const imageUrl = data.imageUrl || `https://picsum.photos/seed/${Date.now()}/1200/630`;
+  const tags = data.tags?.split(',').map(tag => tag.trim()).filter(Boolean) ?? [];
 
   let newPost;
   try {
     newPost = await createPost({ 
-      title: validatedFields.data.title, 
-      subtitle: validatedFields.data.subtitle,
-      content: validatedFields.data.content,
+      title: data.title, 
+      subtitle: data.subtitle,
+      content: data.content,
       tags,
-      imageUrl: validatedFields.data.imageUrl,
-      imageHint: validatedFields.data.imageHint || 'filosofia abstrata'
+      imageUrl: imageUrl,
+      imageHint: data.imageHint || 'filosofia abstrata'
     });
   } catch (error: any) {
     return {
@@ -69,16 +71,22 @@ export async function updatePostAction(id: string, prevState: any, formData: For
         };
     }
 
-    const tags = validatedFields.data.tags?.split(',').map(tag => tag.trim()).filter(Boolean) ?? [];
+    const data = validatedFields.data;
+    const tags = data.tags?.split(',').map(tag => tag.trim()).filter(Boolean) ?? [];
 
     try {
+        const oldPost = await getPostById(id);
+        if (!oldPost) {
+            return { errors: { _form: ['Post não encontrado.'] } };
+        }
+
         await updatePost(id, {
-            title: validatedFields.data.title,
-            subtitle: validatedFields.data.subtitle,
-            content: validatedFields.data.content,
+            title: data.title,
+            subtitle: data.subtitle,
+            content: data.content,
             tags,
-            imageUrl: validatedFields.data.imageUrl,
-            imageHint: validatedFields.data.imageHint || 'filosofia abstrata',
+            imageUrl: data.imageUrl || oldPost.imageUrl,
+            imageHint: data.imageHint || oldPost.imageHint,
         });
     } catch (error) {
         return {
