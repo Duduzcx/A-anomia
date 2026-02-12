@@ -258,8 +258,10 @@ export async function updatePostAction(id: string, prevState: any, formData: For
             subtitle: data.subtitle,
             content: data.content,
             tags,
-            imageUrl: data.imageUrl || oldPost.imageUrl,
-            imageHint: data.imageHint || oldPost.imageHint,
+            imageUrl: data.imageUrl === '' 
+                ? `https://picsum.photos/seed/${Date.now()}/1200/630` 
+                : (data.imageUrl || oldPost.imageUrl),
+            imageHint: data.imageHint !== undefined ? data.imageHint : oldPost.imageHint,
         });
     } catch (error: any) {
       console.error("Database Error:", error);
