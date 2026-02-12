@@ -1,12 +1,16 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useState, useTransition } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { createPostAction } from '@/app/actions';
 import { SubmitButton } from './submit-button';
+import { generateImageAction } from '@/app/ai-actions';
+import { Button } from '@/components/ui/button';
+import { Loader2, Wand2 } from 'lucide-react';
+import Image from 'next/image';
 
 export default function CreatePostForm() {
   const [createState, createFormAction] = useActionState(createPostAction, { errors: {} });
@@ -14,9 +18,80 @@ export default function CreatePostForm() {
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
   const [content, setContent] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+
+  // New state for AI image generator
+  const [isGenerating, startTransition] = useTransition();
+  const [imagePrompt, setImagePrompt] = useState('');
+  const [generationError, setGenerationError] = useState<string | null>(null);
+
+  const handleGenerateImage = () => {
+    setGenerationError(null);
+    startTransition(async () => {
+      if (!imagePrompt) {
+        setGenerationError('Por favor, descreva a imagem que você deseja criar.');
+        return;
+      }
+      const result = await generateImageAction(imagePrompt);
+      if (result.error) {
+        setGenerationError(result.error);
+      } else if (result.data?.imageUrl) {
+        setImageUrl(result.data.imageUrl);
+      }
+    });
+  };
 
   return (
     <div className="mt-8 space-y-8">
+      <Card className="bg-secondary">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Wand2 />
+            Gerador de Imagem com IA
+          </CardTitle>
+          <CardDescription>
+            Não consegue encontrar uma imagem? Descreva o que você quer e deixe a IA criar para você.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="imagePrompt">Descrição da Imagem</Label>
+            <div className="flex gap-2">
+              <Input
+                id="imagePrompt"
+                name="imagePrompt"
+                value={imagePrompt}
+                onChange={(e) => setImagePrompt(e.target.value)}
+                placeholder="Ex: um astronauta meditando em marte"
+                disabled={isGenerating}
+              />
+              <Button type="button" onClick={handleGenerateImage} disabled={isGenerating}>
+                {isGenerating ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  'Gerar'
+                )}
+              </Button>
+            </div>
+            {generationError && <p className="mt-2 text-sm text-destructive">{generationError}</p>}
+          </div>
+          {isGenerating && (
+             <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-lg border-border bg-background/50">
+                <Loader2 className="w-8 h-8 mb-2 animate-spin text-primary" />
+                <p className="text-muted-foreground">Criando sua imagem... Isso pode levar um minuto.</p>
+            </div>
+          )}
+          {imageUrl.startsWith('data:image') && (
+            <div className="space-y-2">
+              <Label>Prévia da Imagem Gerada</Label>
+              <div className="relative w-full overflow-hidden border rounded-lg aspect-video border-border">
+                <Image src={imageUrl} alt="Imagem gerada por IA" fill className="object-cover" />
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       <form action={createFormAction} className="space-y-8">
         <Card>
           <CardHeader>
@@ -44,9 +119,9 @@ export default function CreatePostForm() {
               
               <div className='space-y-2'>
                 <Label htmlFor="imageUrl" className="text-base">URL da Imagem</Label>
-                <Input id="imageUrl" name="imageUrl" placeholder="Deixe em branco para uma imagem aleatória" />
+                <Input id="imageUrl" name="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="Use o gerador de IA acima ou cole uma URL aqui" />
                  <p className="mt-1 text-sm text-muted-foreground">
-                  Dica: Use o site <a href="https://unsplash.com/pt" target="_blank" rel="noopener noreferrer" className="underline">Unsplash</a> para imagens de alta qualidade. Após achar a imagem, pressione e segure sobre ela e escolha "Copiar endereço da imagem".
+                  Se o campo ficar vazio, uma imagem aleatória será adicionada.
                 </p>
                 {createState.errors?.imageUrl && <p className="mt-1 text-sm text-destructive">{createState.errors.imageUrl[0]}</p>}
               </div>
