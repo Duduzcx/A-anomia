@@ -1,17 +1,13 @@
 'use client';
 
-import { useActionState, useState, useTransition } from 'react';
+import { useActionState, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { updatePostAction } from '@/app/actions';
 import type { Post } from '@/types';
 import { SubmitButton } from './submit-button';
-import { generateImageAction } from '@/app/ai-actions';
-import { Button } from '@/components/ui/button';
-import { Loader2, Wand2 } from 'lucide-react';
-import Image from 'next/image';
 
 type EditPostFormProps = {
   post: Post;
@@ -28,80 +24,8 @@ export default function EditPostForm({ post }: EditPostFormProps) {
   const updatePostActionWithId = updatePostAction.bind(null, post.id);
   const [updateState, formAction] = useActionState(updatePostActionWithId, { errors: {} });
 
-  // New state for AI image generator
-  const [isGenerating, startTransition] = useTransition();
-  const [imagePrompt, setImagePrompt] = useState(post.imageHint || '');
-  const [generationError, setGenerationError] = useState<string | null>(null);
-
-  const handleGenerateImage = () => {
-    setGenerationError(null);
-    startTransition(async () => {
-      if (!imagePrompt) {
-        setGenerationError('Por favor, descreva a imagem que você deseja criar.');
-        return;
-      }
-      const result = await generateImageAction(imagePrompt);
-      if (result.error) {
-        setGenerationError(result.error);
-      } else if (result.data?.imageUrl) {
-        setImageUrl(result.data.imageUrl);
-        setImageHint(imagePrompt);
-      }
-    });
-  };
-
   return (
-    <div className="mt-8 space-y-8">
-      <Card className="bg-secondary">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Wand2 />
-            Gerador de Imagem com IA
-          </CardTitle>
-          <CardDescription>
-            Não consegue encontrar uma imagem? Descreva o que você quer e deixe a IA criar uma nova.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="imagePrompt">Descrição da Imagem</Label>
-            <div className="flex gap-2">
-              <Input
-                id="imagePrompt"
-                name="imagePrompt"
-                value={imagePrompt}
-                onChange={(e) => setImagePrompt(e.target.value)}
-                placeholder="Ex: um astronauta meditando em marte"
-                disabled={isGenerating}
-              />
-              <Button type="button" onClick={handleGenerateImage} disabled={isGenerating}>
-                {isGenerating ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  'Gerar Nova Imagem'
-                )}
-              </Button>
-            </div>
-            {generationError && <p className="mt-2 text-sm text-destructive">{generationError}</p>}
-          </div>
-          {isGenerating && (
-             <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-lg border-border bg-background/50">
-                <Loader2 className="w-8 h-8 mb-2 animate-spin text-primary" />
-                <p className="text-muted-foreground">Criando sua imagem... Isso pode levar um minuto.</p>
-            </div>
-          )}
-          {imageUrl && !isGenerating && (
-            <div className="space-y-2">
-              <Label>Prévia da Imagem</Label>
-              <div className="relative w-full overflow-hidden border rounded-lg aspect-video border-border">
-                <Image src={imageUrl} alt="Imagem do post" fill className="object-cover" />
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-
+    <div className="mt-8">
       <Card>
         <CardHeader>
           <CardTitle>Detalhes do Post</CardTitle>
@@ -132,14 +56,17 @@ export default function EditPostForm({ post }: EditPostFormProps) {
               <Label htmlFor="imageUrl" className="text-base">URL da Imagem</Label>
               <Input id="imageUrl" name="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
               <p className="mt-1 text-sm text-muted-foreground">
-                Use o gerador de IA acima ou cole uma URL aqui. Se o campo ficar vazio, uma imagem aleatória será usada.
+                Cole aqui a URL de uma imagem. Se o campo ficar vazio, uma imagem aleatória será usada.
               </p>
               {updateState.errors?.imageUrl && <p className="mt-1 text-sm text-destructive">{updateState.errors.imageUrl[0]}</p>}
             </div>
 
             <div className='space-y-2'>
-              <Label htmlFor="imageHint" className="text-base">Dica para Imagem (IA)</Label>
+              <Label htmlFor="imageHint" className="text-base">Dica para Imagem</Label>
               <Input id="imageHint" name="imageHint" value={imageHint} onChange={(e) => setImageHint(e.target.value)} />
+              <p className="mt-1 text-sm text-muted-foreground">
+                  Duas ou três palavras para busca de imagens.
+              </p>
               {updateState.errors?.imageHint && <p className="mt-1 text-sm text-destructive">{updateState.errors.imageHint[0]}</p>}
             </div>
 
